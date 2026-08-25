@@ -198,6 +198,9 @@ def classify_batch(
     for record in records:
         if frozen_demo and "expected" in record:
             result = demo_classification(record)
+        elif frozen_demo:
+            settlement = record.get("expected", {}).get("settlement", "Кокшетау")
+            result = fallback_classification(record["raw_text"], settlement)
         else:
             settlement = record.get("expected", {}).get("settlement", "Кокшетау")
             result = classify_text(record["raw_text"], settlement)
