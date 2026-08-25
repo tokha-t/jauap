@@ -119,7 +119,7 @@ def _match_street(text: str, settlement: str, extracted_street: str | None = Non
 def _local_extract(text: str) -> dict[str, Any]:
     settlement = _settlement(text)
     street, _ = _match_street(text, settlement)
-    number = re.search(r"(?<![A-Za-zА-Яа-яӘәҒғҚқҢңӨөҰұҮүҺһІі])([1-9]\d{0,2})(?:-[үйа-я])?", text)
+    number = re.search(r"(?<![A-Za-zА-Яа-яӘәҒғҚқҢңӨөҰұҮүҺһІі])([1-9]\d{0,2})(?:-үй)?", text)
     street_name = street["name"] if street else None
     raw_mention = ""
     if street_name:

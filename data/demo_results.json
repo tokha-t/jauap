@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26T04:40:34",
+  "generated_at": "2026-08-26T04:46:58",
   "as_of_date": "2026-08-26",
   "cases": [
     {
@@ -74,7 +74,7 @@
       "deemed_refusal_date": "2026-09-15",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Абая көшесі 14-ү",
+        "raw_mention": "Абая көшесі 14-үй",
         "street": "Абая",
         "building": "14",
         "district": null,
@@ -314,7 +314,7 @@
       "deemed_refusal_date": "2026-09-10",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Абая көшесі 14-ү",
+        "raw_mention": "Абая көшесі 14-үй",
         "street": "Абая",
         "building": "14",
         "district": null,
@@ -554,7 +554,7 @@
       "deemed_refusal_date": "2026-09-14",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Абая көшесі 14-ү",
+        "raw_mention": "Абая көшесі 14-үй",
         "street": "Абая",
         "building": "14",
         "district": null,
@@ -794,7 +794,7 @@
       "deemed_refusal_date": "2026-09-09",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Абая көшесі 14-ү",
+        "raw_mention": "Абая көшесі 14-үй",
         "street": "Абая",
         "building": "14",
         "district": null,
@@ -1032,7 +1032,7 @@
       "deemed_refusal_date": "2026-08-18",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Абая көшесі 7-ү",
+        "raw_mention": "Абая көшесі 7-үй",
         "street": "Абая",
         "building": "7",
         "district": null,
@@ -1586,7 +1586,7 @@
       "deemed_refusal_date": "2026-09-04",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Шевченко көшесі 73-ү",
+        "raw_mention": "Шевченко көшесі 73-үй",
         "street": "Шевченко",
         "building": "73",
         "district": null,
@@ -1632,7 +1632,7 @@
       "deemed_refusal_date": "2026-09-03",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Маметовой көшесі 24-ү",
+        "raw_mention": "Маметовой көшесі 24-үй",
         "street": "Маншук Маметовой",
         "building": "24",
         "district": null,
@@ -1816,7 +1816,7 @@
       "deemed_refusal_date": "2026-08-28",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": "Аул",
@@ -1959,7 +1959,7 @@
       "deemed_refusal_date": "2026-08-25",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Ауэзова көшесі 42-ү",
+        "raw_mention": "Ауэзова көшесі 42-үй",
         "street": "Мухтара Ауэзова",
         "building": "42",
         "district": "Аул",
@@ -2153,7 +2153,7 @@
       "deemed_refusal_date": "2026-08-19",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Маметовой көшесі 24-ү",
+        "raw_mention": "Маметовой көшесі 24-үй",
         "street": "Маншук Маметовой",
         "building": "24",
         "district": "Аул",
@@ -2397,7 +2397,7 @@
       "deemed_refusal_date": "2026-09-17",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Ауэзова көшесі 42-ү",
+        "raw_mention": "Ауэзова көшесі 42-үй",
         "street": "Мухтара Ауэзова",
         "building": "42",
         "district": "Аул",
@@ -2538,7 +2538,7 @@
       "deemed_refusal_date": "2026-09-11",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "серэ көшесі 19-ү",
+        "raw_mention": "серэ көшесі 19-үй",
         "street": "Акана серэ",
         "building": "19",
         "district": null,
@@ -2717,7 +2717,7 @@
       "deemed_refusal_date": "2026-09-07",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Шевченко көшесі 73-ү",
+        "raw_mention": "Шевченко көшесі 73-үй",
         "street": "Шевченко",
         "building": "73",
         "district": null,
@@ -2856,7 +2856,7 @@
       "deemed_refusal_date": "2026-09-02",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": null,
@@ -2904,7 +2904,7 @@
       "deemed_refusal_date": "2026-09-01",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Пушкина көшесі 40-ү",
+        "raw_mention": "Пушкина көшесі 40-үй",
         "street": "Пушкина",
         "building": "40",
         "district": "Аул",
@@ -3047,7 +3047,7 @@
       "deemed_refusal_date": "2026-08-27",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": null,
@@ -3238,7 +3238,7 @@
       "deemed_refusal_date": "2026-08-21",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "жолы көшесі 12-ү",
+        "raw_mention": "жолы көшесі 12-үй",
         "street": "Жибек жолы",
         "building": "12",
         "district": null,
@@ -3477,7 +3477,7 @@
       "deemed_refusal_date": "2026-08-14",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "серэ көшесі 19-ү",
+        "raw_mention": "серэ көшесі 19-үй",
         "street": "Акана серэ",
         "building": "19",
         "district": null,
@@ -4179,7 +4179,7 @@
       "deemed_refusal_date": "2026-08-28",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Пушкина көшесі 40-ү",
+        "raw_mention": "Пушкина көшесі 40-үй",
         "street": "Пушкина",
         "building": "40",
         "district": null,
@@ -4226,7 +4226,7 @@
       "deemed_refusal_date": "2026-08-27",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Гоголя көшесі 67-ү",
+        "raw_mention": "Гоголя көшесі 67-үй",
         "street": "Гоголя",
         "building": "67",
         "district": null,
@@ -4369,7 +4369,7 @@
       "deemed_refusal_date": "2026-08-24",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Гоголя көшесі 67-ү",
+        "raw_mention": "Гоголя көшесі 67-үй",
         "street": "Гоголя",
         "building": "67",
         "district": "Аул",
@@ -4756,7 +4756,7 @@
       "deemed_refusal_date": "2026-09-16",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Ауельбекова көшесі 88-ү",
+        "raw_mention": "Ауельбекова көшесі 88-үй",
         "street": "Еркина Ауельбекова",
         "building": "88",
         "district": null,
@@ -4940,7 +4940,7 @@
       "deemed_refusal_date": "2026-09-10",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Ауельбекова көшесі 88-ү",
+        "raw_mention": "Ауельбекова көшесі 88-үй",
         "street": "Еркина Ауельбекова",
         "building": "88",
         "district": "Аул",
@@ -5124,7 +5124,7 @@
       "deemed_refusal_date": "2026-09-04",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": "Аул",
@@ -5311,7 +5311,7 @@
       "deemed_refusal_date": "2026-08-31",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Шевченко көшесі 73-ү",
+        "raw_mention": "Шевченко көшесі 73-үй",
         "street": "Шевченко",
         "building": "73",
         "district": null,
@@ -5454,7 +5454,7 @@
       "deemed_refusal_date": "2026-08-26",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "жолы көшесі 12-ү",
+        "raw_mention": "жолы көшесі 12-үй",
         "street": "Жибек жолы",
         "building": "12",
         "district": "Аул",
@@ -5551,7 +5551,7 @@
       "deemed_refusal_date": "2026-08-24",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Ауэзова көшесі 42-ү",
+        "raw_mention": "Ауэзова көшесі 42-үй",
         "street": "Мухтара Ауэзова",
         "building": "42",
         "district": "Аул",
@@ -6166,7 +6166,7 @@
       "deemed_refusal_date": "2026-09-09",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Пушкина көшесі 40-ү",
+        "raw_mention": "Пушкина көшесі 40-үй",
         "street": "Пушкина",
         "building": "40",
         "district": null,
@@ -6580,7 +6580,7 @@
       "deemed_refusal_date": "2026-08-27",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Сейфуллина көшесі 31-ү",
+        "raw_mention": "Сейфуллина көшесі 31-үй",
         "street": "Сакена Сейфуллина",
         "building": "31",
         "district": null,
@@ -7011,7 +7011,7 @@
       "deemed_refusal_date": "2026-08-14",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "серэ көшесі 19-ү",
+        "raw_mention": "серэ көшесі 19-үй",
         "street": "Акана серэ",
         "building": "19",
         "district": null,
@@ -7293,7 +7293,7 @@
       "deemed_refusal_date": "2026-09-10",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": null,
@@ -7337,7 +7337,7 @@
       "deemed_refusal_date": "2026-09-09",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Сейфуллина көшесі 31-ү",
+        "raw_mention": "Сейфуллина көшесі 31-үй",
         "street": "Сакена Сейфуллина",
         "building": "31",
         "district": null,
@@ -7708,7 +7708,7 @@
       "deemed_refusal_date": "2026-08-28",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Уалиханова көшесі 175-ү",
+        "raw_mention": "Уалиханова көшесі 175-үй",
         "street": "Шокана Уалиханова",
         "building": "175",
         "district": null,
@@ -7895,7 +7895,7 @@
       "deemed_refusal_date": "2026-08-24",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Уалиханова көшесі 175-ү",
+        "raw_mention": "Уалиханова көшесі 175-үй",
         "street": "Шокана Уалиханова",
         "building": "175",
         "district": null,
@@ -7992,7 +7992,7 @@
       "deemed_refusal_date": "2026-08-20",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Шевченко көшесі 73-ү",
+        "raw_mention": "Шевченко көшесі 73-үй",
         "street": "Шевченко",
         "building": "73",
         "district": null,
@@ -8090,7 +8090,7 @@
       "deemed_refusal_date": "2026-08-18",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Ауельбекова көшесі 88-ү",
+        "raw_mention": "Ауельбекова көшесі 88-үй",
         "street": "Еркина Ауельбекова",
         "building": "88",
         "district": "Аул",
@@ -8697,7 +8697,7 @@
       "deemed_refusal_date": "2026-09-03",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Шевченко көшесі 73-ү",
+        "raw_mention": "Шевченко көшесі 73-үй",
         "street": "Шевченко",
         "building": "73",
         "district": "Аул",
@@ -8743,7 +8743,7 @@
       "deemed_refusal_date": "2026-09-02",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Уалиханова көшесі 175-ү",
+        "raw_mention": "Уалиханова көшесі 175-үй",
         "street": "Шокана Уалиханова",
         "building": "175",
         "district": null,
@@ -9072,7 +9072,7 @@
       "deemed_refusal_date": "2026-08-24",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Сейфуллина көшесі 31-ү",
+        "raw_mention": "Сейфуллина көшесі 31-үй",
         "street": "Сакена Сейфуллина",
         "building": "31",
         "district": null,
@@ -9169,7 +9169,7 @@
       "deemed_refusal_date": "2026-08-20",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Сейфуллина көшесі 31-ү",
+        "raw_mention": "Сейфуллина көшесі 31-үй",
         "street": "Сакена Сейфуллина",
         "building": "31",
         "district": null,
@@ -9266,7 +9266,7 @@
       "deemed_refusal_date": "2026-08-18",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": null,
@@ -9550,7 +9550,7 @@
       "deemed_refusal_date": "2026-09-14",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Пушкина көшесі 40-ү",
+        "raw_mention": "Пушкина көшесі 40-үй",
         "street": "Пушкина",
         "building": "40",
         "district": null,
@@ -9640,7 +9640,7 @@
       "deemed_refusal_date": "2026-09-10",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Ауельбекова көшесі 88-ү",
+        "raw_mention": "Ауельбекова көшесі 88-үй",
         "street": "Еркина Ауельбекова",
         "building": "88",
         "district": null,
@@ -9731,7 +9731,7 @@
       "deemed_refusal_date": "2026-09-08",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Момышулы көшесі 21-ү",
+        "raw_mention": "Момышулы көшесі 21-үй",
         "street": "Бауыржана Момышулы",
         "building": "21",
         "district": null,
@@ -9778,7 +9778,7 @@
       "deemed_refusal_date": "2026-09-07",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Гоголя көшесі 67-ү",
+        "raw_mention": "Гоголя көшесі 67-үй",
         "street": "Гоголя",
         "building": "67",
         "district": "Аул",
@@ -10147,7 +10147,7 @@
       "deemed_refusal_date": "2026-08-26",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "жолы көшесі 12-ү",
+        "raw_mention": "жолы көшесі 12-үй",
         "street": "Жибек жолы",
         "building": "12",
         "district": null,
@@ -10776,7 +10776,7 @@
       "deemed_refusal_date": "2026-09-11",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Гоголя көшесі 67-ү",
+        "raw_mention": "Гоголя көшесі 67-үй",
         "street": "Гоголя",
         "building": "67",
         "district": "Аул",
@@ -10914,7 +10914,7 @@
       "deemed_refusal_date": "2026-09-08",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Маметовой көшесі 24-ү",
+        "raw_mention": "Маметовой көшесі 24-үй",
         "street": "Маншук Маметовой",
         "building": "24",
         "district": null,
@@ -11195,7 +11195,7 @@
       "deemed_refusal_date": "2026-08-31",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Сатпаева көшесі 54-ү",
+        "raw_mention": "Сатпаева көшесі 54-үй",
         "street": "Каныша Сатпаева",
         "building": "54",
         "district": null,
@@ -11287,7 +11287,7 @@
       "deemed_refusal_date": "2026-08-28",
       "deemed_refusal": false,
       "location": {
-        "raw_mention": "Уалиханова көшесі 175-ү",
+        "raw_mention": "Уалиханова көшесі 175-үй",
         "street": "Шокана Уалиханова",
         "building": "175",
         "district": null,
@@ -11671,7 +11671,7 @@
       "deemed_refusal_date": "2026-08-17",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Сатпаева көшесі 54-ү",
+        "raw_mention": "Сатпаева көшесі 54-үй",
         "street": "Каныша Сатпаева",
         "building": "54",
         "district": "Аул",
@@ -11720,7 +11720,7 @@
       "deemed_refusal_date": "2026-08-14",
       "deemed_refusal": true,
       "location": {
-        "raw_mention": "Пушкина көшесі 40-ү",
+        "raw_mention": "Пушкина көшесі 40-үй",
         "street": "Пушкина",
         "building": "40",
         "district": "Аул",
