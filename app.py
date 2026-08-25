@@ -7,7 +7,6 @@ import io
 import json
 import math
 import os
-import base64
 from dataclasses import asdict
 from datetime import date, datetime
 from pathlib import Path
@@ -16,7 +15,7 @@ from typing import Any
 import folium
 import pandas as pd
 import streamlit as st
-from streamlit_folium import st_folium
+from streamlit_folium import folium_static
 
 from jauap.classify import classify_batch
 from jauap.cluster import cluster_cases
@@ -39,7 +38,6 @@ DATA_DIR = ROOT / "data"
 DEMO_CORPUS = DATA_DIR / "demo_corpus.json"
 DEMO_RESULTS = DATA_DIR / "demo_results.json"
 ROUTING = json.loads((DATA_DIR / "routing.json").read_text(encoding="utf-8"))
-VENDOR_DIR = DATA_DIR / "vendor"
 
 RISK_LABELS = {"green": "🟢 Низкий", "amber": "🟠 Средний", "red": "🔴 Высокий"}
 RISK_COLORS = {"green": "#18864B", "amber": "#C67605", "red": "#C92A2A"}
@@ -92,11 +90,12 @@ def _route_metadata(classification: dict[str, Any]) -> dict[str, Any]:
 
 
 def _embed_leaflet_assets(fmap: folium.Map) -> None:
-    """Replace Folium's CDN defaults with committed data URIs for plane-mode use."""
-    leaflet_js = base64.b64encode((VENDOR_DIR / "leaflet.js").read_bytes()).decode("ascii")
-    leaflet_css = base64.b64encode((VENDOR_DIR / "leaflet.css").read_bytes()).decode("ascii")
-    fmap.default_js = [("leaflet", f"data:text/javascript;base64,{leaflet_js}")]
-    fmap.default_css = [("leaflet_css", f"data:text/css;base64,{leaflet_css}")]
+    """Replace Folium's CDN defaults with same-origin committed assets."""
+    fmap.default_js = [
+        ("leaflet", "/app/static/leaflet.js"),
+        ("jquery", "/app/static/jquery.min.js"),
+    ]
+    fmap.default_css = [("leaflet_css", "/app/static/leaflet.css")]
 
 
 def process_records(records: list[dict[str, Any]], *, frozen_demo: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
@@ -391,7 +390,7 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
     station_layer.add_to(fmap)
     folium.LayerControl(collapsed=False).add_to(fmap)
     st.caption(f"На карте: {rendered} отметок. Переключение схлопывает повторные обращения по одному объекту.")
-    st_folium(fmap, use_container_width=True, height=600, key=f"map-{view}", returned_objects=[])
+    folium_static(fmap, width=900, height=600)
     st.markdown('<div class="map-caption">Внутренний инструмент диспетчеризации. Не предназначен для публикации.</div>', unsafe_allow_html=True)
 
 
