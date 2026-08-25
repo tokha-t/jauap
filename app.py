@@ -7,6 +7,7 @@ import io
 import json
 import math
 import os
+import warnings
 from dataclasses import asdict
 from datetime import date, datetime
 from pathlib import Path
@@ -390,7 +391,9 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
     station_layer.add_to(fmap)
     folium.LayerControl(collapsed=False).add_to(fmap)
     st.caption(f"На карте: {rendered} отметок. Переключение схлопывает повторные обращения по одному объекту.")
-    folium_static(fmap, width=900, height=600)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message=".*folium_static is deprecated.*", category=DeprecationWarning)
+        folium_static(fmap, width=900, height=600)
     st.markdown('<div class="map-caption">Внутренний инструмент диспетчеризации. Не предназначен для публикации.</div>', unsafe_allow_html=True)
 
 
