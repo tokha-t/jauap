@@ -183,10 +183,13 @@ def _hard_cases() -> list[dict]:
         text = pipe_phrasings[index % len(pipe_phrasings)]
         if index:
             text += ["!!!", " пожалуйста помогите", " уже невозможно", " балалар жүре алмайды"][index % 4]
-        records.append(_record(
+        record = _record(
             index + 1, text, languages[index], "water_supply",
             hard_case="broken_pipe_cluster_20" if index else "code_switched_naive_misroute+broken_pipe_cluster_20",
-        ))
+        )
+        cluster_day = AS_OF - timedelta(days=index % 9)
+        record["received_at"] = datetime.combine(cluster_day, time(9 + index % 8, 15)).isoformat()
+        records.append(record)
 
     records.extend([
         _record(21, "Красный Яр, ул. Достык 12 — вечером не горят фонари", "ru", "street_lighting",
