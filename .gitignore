@@ -1,4 +1,3 @@
 __pycache__/
 *.py[cod]
 data/.llm_cache/
-.streamlit/
