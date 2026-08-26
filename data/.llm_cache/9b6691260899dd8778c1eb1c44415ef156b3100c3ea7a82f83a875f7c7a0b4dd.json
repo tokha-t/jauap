@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "public_transport",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин прямо заявляет о бездействии государственного органа по ранее поданному обращению и требует восстановить нарушенное право, что соответствует признакам жалобы по АППК."
+  }
+}

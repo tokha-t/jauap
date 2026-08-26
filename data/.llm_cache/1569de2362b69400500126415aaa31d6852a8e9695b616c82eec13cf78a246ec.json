@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "Упр. пасс. транспорта и автодорог"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Основной целью обращения является получение информации о сроках и графике ремонтных работ дорожного покрытия."
+  }
+}

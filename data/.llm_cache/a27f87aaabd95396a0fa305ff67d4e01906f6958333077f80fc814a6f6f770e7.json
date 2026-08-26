@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Основной целью обращения является получение информации о сроках и графике выполнения работ по обрезке или сносу сухого дерева, что соответствует запросу согласно правилам."
+  }
+}

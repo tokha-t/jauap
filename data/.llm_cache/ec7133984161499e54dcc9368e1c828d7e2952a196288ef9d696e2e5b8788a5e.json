@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.9,
+    "reasoning": "Гражданин задает вопрос о сроках регистрации обращения по поводу опасного дерева (запрос информации о дате решения вопроса), что относится к теме благоустройства и компетенции Отдела ЖКХ."
+  }
+}

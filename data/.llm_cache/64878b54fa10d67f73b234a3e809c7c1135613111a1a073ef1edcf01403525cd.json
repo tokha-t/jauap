@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "heating",
+    "routing_targets": [
+      "ГКП на ПХВ «Кокшетау Жылу»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о текущем дефекте (холодные батареи) в качестве факта для регистрации, что подпадает под определение сообщения согласно правилу 5."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "electricity",
+    "routing_targets": [
+      "НЕ ОПРЕДЕЛЕНО"
+    ],
+    "language_detected": "kk",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о текущем аварийном отключении электричества в доме, что относится к сообщению о дефекте в работе инфраструктуры."
+  }
+}

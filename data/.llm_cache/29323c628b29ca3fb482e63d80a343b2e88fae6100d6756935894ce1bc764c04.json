@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "предложение",
+    "topic": "public_transport",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.9,
+    "reasoning": "Гражданин вносит предложение по улучшению графика работы общественного транспорта и предлагает включить объект в план развития."
+  }
+}

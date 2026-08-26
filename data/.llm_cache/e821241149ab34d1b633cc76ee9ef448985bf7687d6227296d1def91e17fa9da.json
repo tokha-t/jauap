@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Обращение содержит просьбу о содействии в решении проблемы с дорожным покрытием (яма перед домом по ул. Сакена Сейфуллина 31), что квалифицируется как заявление, относящееся к теме состояния дорог."
+  }
+}

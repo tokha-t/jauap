@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин прямо указывает на бездействие государственного органа по ранее поданному обращению, требует восстановить нарушенное право и приводит конкретный адрес с неработающим освещением."
+  }
+}

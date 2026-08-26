@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "The citizen explicitly challenges the inaction of the state body regarding a previous unanswered request about a dangerous tree ('Areketsizdikke shagymdanamyn') and demands restoration of violated rights."
+  }
+}

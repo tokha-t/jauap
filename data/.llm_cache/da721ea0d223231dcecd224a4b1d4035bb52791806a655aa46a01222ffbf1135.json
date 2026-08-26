@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "public_transport",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "Упр. пасс. транспорта и автодорог"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о системных нарушениях в графике движения общественного транспорта на остановке, что подпадает под сообщение о дефектах в работе транспортной службы."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "social",
+    "routing_targets": [
+      "Отдел занятости и социальных программ"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит оказать содействие в получении социальной выплаты, что относится к первичному обращению за помощью в реализации прав и подлежит квалификации как заявление."
+  }
+}

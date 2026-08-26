@@ -1,10 +1,23 @@
 {
-  "generated_at": "2026-08-26T22:58:51+05:00",
+  "generated_at": "2026-08-27T04:45:53+05:00",
   "sample_size": 250,
-  "results_sha256": "950ab67006271a7fe1c3d80d8d8a61b481264be52496c89e970dff207ab59a86",
+  "results_sha256": "a683b5ae4604f52d15aa802fd9d326e86f098948e3707d5dd7779fda4594786c",
   "accuracy": {
-    "appeal_type": 0.904,
-    "topic": 0.952,
+    "appeal_type": 0.876,
+    "topic": 0.924,
     "settlement": 1.0
-  }
+  },
+  "appeal_type_distribution": {
+    "сообщение": 150,
+    "жалоба": 25,
+    "запрос": 12,
+    "заявление": 55,
+    "предложение": 5,
+    "отклик": 3
+  },
+  "majority_class_baseline": {
+    "label": "сообщение",
+    "accuracy": 0.6
+  },
+  "appeal_type_accuracy_gap": 0.276
 }
