@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .classify import classify_batch
+from .clock import clock_mode, demo_now
 from .cluster import cluster_cases
 from .deadline_engine import DEADLINES, deadline_for, register_date, working_days_between
 from .draft import draft_response
@@ -52,7 +53,8 @@ def process_records(
     classifier_warnings: list[str] = []
     classified = classify_batch(records, on_warning=classifier_warnings.append)
     by_id = {result["id"]: result for result in classified}
-    today = date.today()
+    with clock_mode(frozen=deterministic_support):
+        today = demo_now()
     cases: list[dict[str, Any]] = []
 
     for record in records:

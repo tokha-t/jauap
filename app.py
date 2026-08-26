@@ -19,6 +19,7 @@ import streamlit as st
 from streamlit_folium import folium_static
 
 from jauap.classify import CLASSIFICATION_CONTRACT_SHA256, FALLBACK_NOTICE
+from jauap.clock import clock_mode, demo_now
 from jauap.deadline_engine import (
     extension_deadline,
     legal_tooltip,
@@ -133,7 +134,7 @@ def _parse_upload(upload: Any) -> list[str]:
 
 
 def _live_records(texts: list[str]) -> list[dict[str, Any]]:
-    now = datetime.now().replace(microsecond=0).isoformat()
+    now = datetime.combine(demo_now(), datetime.min.time()).isoformat()
     return [{
         "id": f"LIVE-{index:03d}", "raw_text": text, "received_at": now,
         "channel": "ввод оператора", "applicant_name": f"Синтетический заявитель {index}",
@@ -348,8 +349,8 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
             representative = located[0]
             location = representative["location"]
             highest_risk = max(member_cases, key=lambda case: case["escalation_risk"])
-            oldest_days = max(1, (date.today() - datetime.fromisoformat(cluster["oldest_received_at"]).date()).days + 1)
-            remaining = working_days_between(date.today(), date.fromisoformat(cluster["earliest_deadline"]))
+            oldest_days = max(1, (demo_now() - datetime.fromisoformat(cluster["oldest_received_at"]).date()).days + 1)
+            remaining = working_days_between(demo_now(), date.fromisoformat(cluster["earliest_deadline"]))
             popup = (
                 f"{cluster['member_count']} обращений · старейшее {oldest_days} дней · "
                 f"срок истекает через {remaining} рабочих дней · {html.escape(representative['statutory_clock_holder'])}"
@@ -410,8 +411,8 @@ def deadlines_tab(cases: list[dict[str, Any]]) -> None:
         disabled=is_complaint or not facts_required,
     )
     if not is_complaint and facts_required and authoriser != "— выберите —":
-        new_date = extension_deadline(date.today())
-        notice_date = notification_deadline(date.today())
+        new_date = extension_deadline(demo_now())
+        notice_date = notification_deadline(demo_now())
         c1, c2 = st.columns(2)
         c1.metric("Новый предельный срок", new_date.isoformat(), help="Не более двух месяцев от даты решения о продлении — АППК ст. 76(3).")
         c2.metric("Уведомить заявителя до", notice_date.isoformat(), help="Отдельный срок: 3 рабочих дня — АППК ст. 76(3).")
@@ -476,7 +477,10 @@ with st.sidebar:
         selected_key_env = None
     provider_label = selected_backend["provider"].capitalize()
     mode = st.radio("Источник обработки", ["Демо · офлайн", f"Живой ввод · {provider_label}"], index=0)
-    st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
+    st.session_state["offline_mode"] = mode.startswith("Демо")
+    with clock_mode(frozen=st.session_state["offline_mode"]):
+        calculation_date = demo_now()
+    st.caption(f"Расчётная дата: {calculation_date.strftime('%d.%m.%Y')}")
     st.caption("Основной провайдер: Gemini.")
     live_api_key = st.text_input(
         "Gemini API-ключ",
@@ -502,12 +506,13 @@ with st.sidebar:
 st.session_state.setdefault("cases", [])
 st.session_state.setdefault("clusters", [])
 st.session_state.setdefault("warnings", [])
-tabs = st.tabs(["Очередь", "Карта", "Сроки", "Сводка"])
-with tabs[0]:
-    queue_tab(st.session_state.cases, st.session_state.clusters, live_api_key)
-with tabs[1]:
-    map_tab(st.session_state.cases, st.session_state.clusters)
-with tabs[2]:
-    deadlines_tab(st.session_state.cases)
-with tabs[3]:
-    summary_tab(st.session_state.cases, st.session_state.clusters)
+with clock_mode(frozen=st.session_state["offline_mode"]):
+    tabs = st.tabs(["Очередь", "Карта", "Сроки", "Сводка"])
+    with tabs[0]:
+        queue_tab(st.session_state.cases, st.session_state.clusters, live_api_key)
+    with tabs[1]:
+        map_tab(st.session_state.cases, st.session_state.clusters)
+    with tabs[2]:
+        deadlines_tab(st.session_state.cases)
+    with tabs[3]:
+        summary_tab(st.session_state.cases, st.session_state.clusters)
