@@ -51,6 +51,14 @@ TOPIC_QUOTAS = {
 }
 
 LANGUAGE_QUOTAS = {"ru": 100, "kk": 63, "mixed": 75, "latin": 12}
+TYPE_QUOTAS = {
+    "сообщение": 150,
+    "заявление": 55,
+    "жалоба": 25,
+    "запрос": 12,
+    "предложение": 5,
+    "отклик": 3,
+}
 
 RU = {
     "water_supply": "На улице {street}, дом {building}, опять нет воды, сколько можно ждать???",
@@ -119,6 +127,68 @@ LATIN = {
     "social": "{street} {building} turamyn, aleumettik tolem tuspedi",
     "education": "{street} {building} mektep shatyry agyp tur",
 }
+
+TYPE_WRAPPERS = {
+    "ru": {
+        "сообщение": "{base}. Сообщаю этот факт для регистрации.",
+        "заявление": "{base}. Для моего дома нужно устранить эту проблему; прошу включить работу в исполнение.",
+        "жалоба": "Ранее обращался по той же проблеме: {base}. Ответа нет, считаю это бездействием и требую восстановить нарушенное право.",
+        "запрос": "{base}. Нужна информация: какой срок и график работ утверждены?",
+        "предложение": "{base}. Предлагаю включить этот объект в план улучшений, чтобы ситуация не повторялась.",
+        "отклик": "{base}. Поддерживаю принятое городом решение устранить эту проблему.",
+    },
+    "kk": {
+        "сообщение": "{base}. Бұл жағдайды тіркеу үшін хабарлаймын.",
+        "заявление": "{base}. Өз құқығымды іске асыру үшін мәселені жоюға жәрдем көрсетуді сұраймын.",
+        "жалоба": "Осы мәселе бойынша бұрын өтініш бердім: {base}. Жауап болмады, әрекетсіздікке шағымданамын және бұзылған құқығымды қалпына келтіруді талап етемін.",
+        "запрос": "{base}. Жұмыстың бекітілген мерзімі мен кестесі туралы ақпарат беруді сұраймын.",
+        "предложение": "{base}. Мұндай жағдай қайталанбауы үшін нысанды жақсарту жоспарына енгізуді ұсынамын.",
+        "отклик": "{base}. Осы мәселені шешу жөніндегі қала шешімін қолдаймын.",
+    },
+    "mixed": {
+        "сообщение": "{base}. Уже бірнеше күн болды, фактіні тіркеуді прошу.",
+        "заявление": "{base}. Өз құқығымды іске асыру үшін прошу включить устранение в работу.",
+        "жалоба": "Раньше осы мәселе бойынша өтініш бердім: {base}. Ответа нет, әрекетсіздік деп санаймын и требую восстановить право.",
+        "запрос": "{base}. Когда бекітілген мерзім мен график дайын болады, прошу сообщить.",
+        "предложение": "{base}. Қайталанбауы үшін предлагаю нысанды жоспарға енгізуді, прошу рассмотреть.",
+        "отклик": "{base}. Қаланың осы шешімін поддерживаю, пікірімді прошу учесть.",
+    },
+    "latin": {
+        "сообщение": "{base}. Bul jagdaidy qashan tirkeuge alatyndarynyzdy habarlaimyn.",
+        "заявление": "{base}. Oz quqygymdy iske asyru ushin komek korsetuinizdi suraimyn, qashan oryndalady?",
+        "жалоба": "Buryngy otinishim jawapsyz qaldy: {base}. Areketsizdikke shagymdanamyn, qashan quqygym qalpyna keledi?",
+        "запрос": "{base}. Bekitilgen merzim men jumys kestesi qashan dayin bolady?",
+        "предложение": "{base}. Qaitalanbauy ushin nysandy jaqsartu josparyna engizudi usynamyn, qashan qaralady?",
+        "отклик": "{base}. Qala sheshimin qoldaimyn, pikirim qashan eskeriletinin habarlanyz.",
+    },
+}
+
+TYPE_TEMPLATES = {
+    language: {
+        topic: dict(TYPE_WRAPPERS[language])
+        for topic in topic_templates
+    }
+    for language, topic_templates in {
+        "ru": RU,
+        "kk": KK,
+        "mixed": MIXED,
+        "latin": LATIN,
+    }.items()
+}
+
+ADVERSARIAL_TOPICS = [
+    "water_supply",
+    "heating",
+    "sewerage",
+    "waste_removal",
+    "snow_cleaning",
+    "road_condition",
+    "street_lighting",
+    "landscaping",
+    "public_transport",
+    "education",
+]
+ADVERSARIAL_LANGUAGES = ["ru", "kk", "mixed", "latin", "ru", "kk", "mixed", "latin", "ru", "kk"]
 
 
 def _working_dates(count: int = 25) -> list[date]:
@@ -218,29 +288,126 @@ def _hard_cases() -> list[dict]:
     return records
 
 
+def _topic_pool(used_topics: Counter[str], rng: random.Random) -> list[str]:
+    remaining = Counter({
+        topic: quota - used_topics[topic]
+        for topic, quota in TOPIC_QUOTAS.items()
+    })
+    adversarial: list[str] = []
+    for topic in ADVERSARIAL_TOPICS:
+        assert remaining[topic] >= 3
+        adversarial.extend([topic] * 3)
+        remaining[topic] -= 3
+    ordinary = [topic for topic, count in remaining.items() for _ in range(count)]
+    rng.shuffle(ordinary)
+    return adversarial + ordinary
+
+
+def _type_pool(used_types: Counter[str], rng: random.Random) -> list[str]:
+    remaining = Counter({
+        appeal_type: quota - used_types[appeal_type]
+        for appeal_type, quota in TYPE_QUOTAS.items()
+    })
+    adversarial = [
+        appeal_type
+        for _ in ADVERSARIAL_TOPICS
+        for appeal_type in ("сообщение", "заявление", "жалоба")
+    ]
+    for appeal_type in adversarial:
+        remaining[appeal_type] -= 1
+        assert remaining[appeal_type] >= 0
+    ordinary = [appeal_type for appeal_type, count in remaining.items() for _ in range(count)]
+    rng.shuffle(ordinary)
+    return adversarial + ordinary
+
+
+def _language_pool(
+    type_pool: list[str], used_languages: Counter[str], rng: random.Random
+) -> list[str]:
+    capacity = Counter({
+        language: quota - used_languages[language]
+        for language, quota in LANGUAGE_QUOTAS.items()
+    })
+    assigned: list[str | None] = [None] * len(type_pool)
+
+    for triple_index, language in enumerate(ADVERSARIAL_LANGUAGES):
+        for offset in range(3):
+            position = triple_index * 3 + offset
+            assigned[position] = language
+            capacity[language] -= 1
+
+    required_languages = {
+        "запрос": ["ru", "kk", "mixed", "latin"],
+        "предложение": ["ru", "kk", "mixed", "latin"],
+        # Three records cannot occupy four pools; prioritise the multilingual claim.
+        "отклик": ["kk", "mixed", "latin"],
+    }
+    for appeal_type, languages in required_languages.items():
+        positions = [
+            index
+            for index, assigned_language in enumerate(assigned)
+            if assigned_language is None and type_pool[index] == appeal_type
+        ]
+        assert len(positions) >= len(languages)
+        for position, language in zip(positions, languages):
+            assigned[position] = language
+            capacity[language] -= 1
+
+    unassigned = [index for index, language in enumerate(assigned) if language is None]
+    remaining_languages = [
+        language
+        for language, count in capacity.items()
+        for _ in range(count)
+    ]
+    assert len(unassigned) == len(remaining_languages)
+    rng.shuffle(remaining_languages)
+    for position, language in zip(unassigned, remaining_languages):
+        assigned[position] = language
+    return [str(language) for language in assigned]
+
+
 def generate() -> list[dict]:
     rng = random.Random(SEED)
     records = _hard_cases()
     used_topics = Counter(record["_ground_truth"]["topic"] for record in records if record["_ground_truth"]["topic"] in TOPIC_QUOTAS)
     used_languages = Counter(record["language_detected"] for record in records)
+    used_types = Counter(record["_ground_truth"]["appeal_type"] for record in records)
 
-    topic_pool = [topic for topic, quota in TOPIC_QUOTAS.items() for _ in range(quota - used_topics[topic])]
-    language_pool = [lang for lang, quota in LANGUAGE_QUOTAS.items() for _ in range(quota - used_languages[lang])]
-    rng.shuffle(topic_pool)
-    rng.shuffle(language_pool)
+    topic_pool = _topic_pool(used_topics, rng)
+    type_pool = _type_pool(used_types, rng)
+    language_pool = _language_pool(type_pool, used_languages, rng)
     assert len(records) + len(topic_pool) == 250
     assert len(topic_pool) == len(language_pool)
+    assert len(topic_pool) == len(type_pool)
 
     template_sets = {"ru": RU, "kk": KK, "mixed": MIXED, "latin": LATIN}
-    for topic, language in zip(topic_pool, language_pool):
+    for bulk_index, (topic, language, appeal_type) in enumerate(
+        zip(topic_pool, language_pool, type_pool)
+    ):
         number = len(records) + 1
-        street, building = rng.choice(CITY_ADDRESSES)
+        if bulk_index < len(ADVERSARIAL_TOPICS) * 3:
+            triple_index = bulk_index // 3
+            street, building = CITY_ADDRESSES[triple_index]
+            hard_case = f"adversarial_type_triple_{triple_index + 1:02d}"
+        else:
+            street, building = rng.choice(CITY_ADDRESSES)
+            hard_case = None
         text = template_sets[language][topic].format(street=street, building=building)
-        if number % 11 == 0:
+        text = TYPE_TEMPLATES[language][topic][appeal_type].format(base=text)
+        if hard_case is None and number % 11 == 0:
             text = text.upper()
-        elif number % 7 == 0:
+        elif hard_case is None and number % 7 == 0:
             text += rng.choice(["!!!", " ну сколько можно", " жауап беріңіздер", " срочно пожалуйста"])
-        records.append(_record(number, text, language, topic))
+        records.append(
+            _record(
+                number,
+                text,
+                language,
+                topic,
+                appeal_type=appeal_type,
+                hard_case=hard_case,
+            )
+        )
 
     assert len(records) == 250
     return records
@@ -250,12 +417,37 @@ def validate(records: list[dict]) -> None:
     assert len(records) == 250
     assert len({record["id"] for record in records}) == 250
     assert Counter(record["language_detected"] for record in records) == LANGUAGE_QUOTAS
+    appeal_types = Counter(record["_ground_truth"]["appeal_type"] for record in records)
+    assert appeal_types == TYPE_QUOTAS
+    for language in LANGUAGE_QUOTAS:
+        for topic in TOPIC_QUOTAS:
+            assert set(TYPE_TEMPLATES[language][topic]) == set(TYPE_QUOTAS)
+    for appeal_type, target in TYPE_QUOTAS.items():
+        represented_languages = {
+            record["language_detected"]
+            for record in records
+            if record["_ground_truth"]["appeal_type"] == appeal_type
+        }
+        assert len(represented_languages) == min(target, len(LANGUAGE_QUOTAS))
     expected_topics = Counter(record["_ground_truth"]["topic"] for record in records)
     for topic, count in TOPIC_QUOTAS.items():
         assert expected_topics[topic] == count, (topic, expected_topics[topic], count)
     hard_cases = Counter(record["hard_case"] for record in records if record["hard_case"])
     assert sum("broken_pipe_cluster_20" in (record["hard_case"] or "") for record in records) == 20
     assert sum((record["hard_case"] or "").startswith("rural_sub_akimat") for record in records) == 3
+    adversarial_groups = {
+        hard_case: [record for record in records if record["hard_case"] == hard_case]
+        for hard_case in hard_cases
+        if hard_case.startswith("adversarial_type_triple_")
+    }
+    assert len(adversarial_groups) == 10
+    for group in adversarial_groups.values():
+        assert len(group) == 3
+        assert len({record["_ground_truth"]["topic"] for record in group}) == 1
+        assert len({record["language_detected"] for record in group}) == 1
+        assert {record["_ground_truth"]["appeal_type"] for record in group} == {
+            "сообщение", "заявление", "жалоба"
+        }
     for required in ["multi_request_split_65_2", "complaint_20_days_no_extension", "information_request",
                      "unverified_competence", "ambiguous_application_or_complaint"]:
         assert hard_cases[required] == 1
@@ -280,6 +472,7 @@ def main() -> None:
     print(f"Wrote {len(records)} synthetic appeals to {DATA_PATH}")
     print(f"Wrote scoring truth to {GROUND_TRUTH_PATH}")
     print("Language distribution:", dict(Counter(record["language_detected"] for record in records)))
+    print("Appeal type distribution:", dict(Counter(record["_ground_truth"]["appeal_type"] for record in records)))
     print("MANDATORY: Tokha must review every kk, mixed, and latin appeal before the demo.")
 
 

@@ -61,6 +61,19 @@ def main() -> None:
         accuracies[field] = sum(actual == predicted for actual, predicted in pairs) / len(pairs)
         print(f"Accuracy {field}: {accuracies[field]:.2%} ({sum(a == p for a, p in pairs)}/{len(pairs)})")
 
+    appeal_type_distribution = Counter(
+        str(item["appeal_type"])
+        for item in ground_truth.values()
+    )
+    majority_label = "сообщение"
+    majority_baseline = appeal_type_distribution[majority_label] / len(cases)
+    accuracy_gap = accuracies["appeal_type"] - majority_baseline
+    print(
+        f"\nModel appeal-type accuracy: {accuracies['appeal_type']:.2%}\n"
+        f"Baseline (always {majority_label}): {majority_baseline:.2%}\n"
+        f"Measured gap: {accuracy_gap:+.2%}"
+    )
+
     if accuracies["appeal_type"] >= 1.0:
         SCORE_PATH.unlink(missing_ok=True)
         raise SystemExit("FAIL: appeal_type accuracy is 100%; investigate a ground-truth leak.")
@@ -70,6 +83,12 @@ def main() -> None:
         "sample_size": len(cases),
         "results_sha256": hashlib.sha256(result_bytes).hexdigest(),
         "accuracy": accuracies,
+        "appeal_type_distribution": dict(appeal_type_distribution),
+        "majority_class_baseline": {
+            "label": majority_label,
+            "accuracy": majority_baseline,
+        },
+        "appeal_type_accuracy_gap": accuracy_gap,
     }
     SCORE_PATH.write_text(
         json.dumps(score_payload, ensure_ascii=False, indent=2) + "\n",

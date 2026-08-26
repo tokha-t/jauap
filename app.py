@@ -448,10 +448,19 @@ def summary_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> 
             if score.get("results_sha256") == result_digest
             else None
         )
+        baseline = (
+            score.get("majority_class_baseline", {}).get("accuracy")
+            if score.get("results_sha256") == result_digest
+            else None
+        )
     except (OSError, ValueError, TypeError):
         accuracy = None
-    if isinstance(accuracy, (int, float)):
-        st.metric("Точность типа обращения на демо-наборе", f"{accuracy:.1%}")
+        baseline = None
+    if isinstance(accuracy, (int, float)) and isinstance(baseline, (int, float)):
+        model_col, baseline_col = st.columns(2)
+        model_col.metric("Точность Gemini по типу обращения", f"{accuracy:.1%}")
+        baseline_col.metric("Базовая точность · всегда «сообщение»", f"{baseline:.1%}")
+        st.caption(f"Измеренный разрыв: {(accuracy - baseline):+.1%} п.п. — вклад модели сверх константного ответа.")
     st.subheader("Язык обращений")
     names = {"ru": "Русский", "kk": "Қазақша", "mixed": "Смешанные", "latin": "Латиница"}
     counts = pd.Series([case["language_detected"] for case in cases]).value_counts()
