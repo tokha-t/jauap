@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "вывоз мусора",
+    "routing_targets": [
+      "ТОО «Кокше Тазалык»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 1.0,
+    "reasoning": "Гражданин сообщает о факте невывоза мусора по конкретному адресу, что является уведомлением о дефекте в работе коммунальной службы."
+  }
+}

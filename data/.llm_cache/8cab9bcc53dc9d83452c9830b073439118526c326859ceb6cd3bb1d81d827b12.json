@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "состояние дорог / ямы",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин уведомляет о дефекте дорожного полотна (огромная яма), что классифицируется как сообщение, с использованием смешанного казахско-русского языка."
+  }
+}

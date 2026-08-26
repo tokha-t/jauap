@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "heating",
+    "routing_targets": [
+      "ГКП на ПХВ «Кокшетау Жылу»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о факте отсутствия отопления в жилом доме, что квалифицируется как сообщение о дефекте коммунальной услуги, требующее оперативного реагирования."
+  }
+}

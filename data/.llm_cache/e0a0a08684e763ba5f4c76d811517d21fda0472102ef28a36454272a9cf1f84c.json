@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 1.0,
+    "reasoning": "Гражданин сообщает о дефекте уличного освещения (не горят фонари), что подпадает под категорию сообщения о неисправности в работе городской инфраструктуры."
+  }
+}

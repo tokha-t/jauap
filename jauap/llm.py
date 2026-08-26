@@ -1,4 +1,4 @@
-"""Single provider boundary with provider-aware, auditable disk caching."""
+"""Gemini-primary model boundary with provider-aware, auditable disk caching."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from typing import Any
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_DIR = DATA_DIR / ".llm_cache"
-DEFAULT_PROVIDER = "gemini"
+PRIMARY_PROVIDER = "gemini"
 PROVIDERS = {
     "gemini": {
         "key_env": "GOOGLE_API_KEY",
@@ -37,7 +37,7 @@ class _EmptyCompletionError(ValueError):
 
 def provider_metadata() -> dict[str, str]:
     """Return the selected provider/model without exposing credentials."""
-    provider = os.environ.get("JAUAP_PROVIDER", DEFAULT_PROVIDER).strip().casefold()
+    provider = os.environ.get("JAUAP_PROVIDER", PRIMARY_PROVIDER).strip().casefold()
     if provider not in PROVIDERS:
         allowed = ", ".join(PROVIDERS)
         raise ValueError(f"Unsupported JAUAP_PROVIDER={provider!r}; choose one of: {allowed}")

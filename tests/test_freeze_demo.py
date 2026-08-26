@@ -102,6 +102,10 @@ class FreezeDemoTests(unittest.TestCase):
         final = json.loads(self.results_path.read_text(encoding="utf-8"))
         self.assertEqual(final["provider"], "gemini")
         self.assertEqual(final["model"], "test-model")
+        self.assertEqual(
+            final["classification_contract_sha256"],
+            freeze_demo.CLASSIFICATION_CONTRACT_SHA256,
+        )
         self.assertEqual(final["case_count"], 2)
 
     def test_resume_skips_classifications_already_in_checkpoint(self) -> None:
@@ -113,6 +117,7 @@ class FreezeDemoTests(unittest.TestCase):
                     "provider": "gemini",
                     "model": "test-model",
                     "corpus_sha256": corpus_sha256,
+                    "classification_contract_sha256": freeze_demo.CLASSIFICATION_CONTRACT_SHA256,
                     "classifications": {"AP-0001": classification("заявление")},
                 }
             ),
@@ -161,11 +166,53 @@ class FreezeDemoTests(unittest.TestCase):
             ),
             encoding="utf-8",
         )
-        with self.assertRaisesRegex(SystemExit, "different provider, model, or corpus"):
+        with self.assertRaisesRegex(SystemExit, "different provider, model, corpus"):
             freeze_demo._load_checkpoint(
                 {"provider": "gemini", "model": "test-model"},
                 "expected",
             )
+
+    def test_stale_classification_contract_is_rejected(self) -> None:
+        corpus_sha256 = hashlib.sha256(self.corpus_path.read_bytes()).hexdigest()
+        self.results_path.write_text(
+            json.dumps(
+                {
+                    "status": "in_progress",
+                    "provider": "gemini",
+                    "model": "test-model",
+                    "corpus_sha256": corpus_sha256,
+                    "classification_contract_sha256": "stale",
+                    "classifications": {},
+                }
+            ),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(SystemExit, "classification contract"):
+            freeze_demo._load_checkpoint(
+                {"provider": "gemini", "model": "test-model"},
+                corpus_sha256,
+            )
+
+    def test_transient_fallback_is_retried_without_being_returned(self) -> None:
+        fallback = {**classification("сообщение"), "warning": "temporary fallback"}
+        provider_result = classification("заявление")
+        with (
+            patch.object(
+                freeze_demo,
+                "classify_text",
+                side_effect=[fallback, provider_result],
+            ) as classify_mock,
+            patch.object(freeze_demo.time, "sleep") as sleep_mock,
+        ):
+            result = freeze_demo._classify_with_retry(
+                self.records[0],
+                retries=3,
+                retry_delay=2,
+            )
+
+        self.assertEqual(result, provider_result)
+        self.assertEqual(classify_mock.call_count, 2)
+        sleep_mock.assert_called_once_with(2)
 
 
 if __name__ == "__main__":

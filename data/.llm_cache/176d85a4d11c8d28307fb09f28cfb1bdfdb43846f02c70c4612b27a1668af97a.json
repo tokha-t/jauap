@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Citizen is reporting a specific infrastructure defect (a large pothole) preventing traffic, which qualifies as a factual notification of a service lapse."
+  }
+}

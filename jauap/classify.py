@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -12,6 +13,11 @@ from .llm import complete
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 ROUTING = json.loads((DATA_DIR / "routing.json").read_text(encoding="utf-8"))
+TOPIC_ALIASES = {
+    alias.casefold(): topic
+    for topic, route in ROUTING.items()
+    for alias in (topic, route["display_name"])
+}
 FALLBACK_NOTICE = "Резервный режим: классификация по правилам, без модели. Уверенность занижена намеренно."
 
 APPEAL_DEFINITIONS = """АППК статья 4 — типы обращений:
@@ -20,7 +26,21 @@ APPEAL_DEFINITIONS = """АППК статья 4 — типы обращений:
 - сообщение — Notification of a violation of law, or of defects in the work of a state body
 - предложение — Recommendation to improve legislation or the work of state bodies
 - отклик — Expression of attitude toward state policy or public events
-- запрос — Request for information on matters of personal or public interest"""
+- запрос — Request for information on matters of personal or public interest
+
+Apply these distinctions in this order:
+1. Use жалоба only when the citizen explicitly challenges an identifiable administrative
+   refusal, decision, act, action, or inaction and asks to cancel, recognise, or remedy that
+   violation. A dissatisfied tone or a request to fix a service is not by itself a жалоба.
+2. Use запрос when the primary purpose is to obtain information, a date, a schedule, or an
+   explanation (for example, "Когда планируется ремонт?").
+3. Use предложение for an idea intended to improve public services (for example,
+   "Предлагаю установить дополнительные урны").
+4. Use заявление for a first-instance request for assistance in exercising a right or
+   receiving/restoring a service (for example, "Прошу восстановить подачу воды").
+5. Use сообщение for a factual notification of a current defect or service lapse (for
+   example, "Во дворе не вывозят мусор"), even if the wording is emotional or asks staff
+   to fix it, unless rule 1 applies."""
 
 RESULT_SCHEMA = {
     "type": "object",
@@ -49,23 +69,32 @@ For housing inspection/КСК–ОСИ, electricity outages, stray animals, or a
 If confidence is below 0.7 the caller will require human review.
 Appeals about prepared/committed criminal offences or threats to state/public safety are emergency under АППК ст. 64(7-2)."""
 
+CLASSIFICATION_CONTRACT_SHA256 = hashlib.sha256(
+    (
+        SYSTEM_PROMPT
+        + "\0"
+        + json.dumps(RESULT_SCHEMA, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\0validator:topic-normalisation-v2"
+    ).encode("utf-8")
+).hexdigest()
+
 
 TOPIC_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
     ("НЕ ОПРЕДЕЛЕНО", ("собак", "иттер", "ксж", "кск", "оси", "электр", "жарық жоқ", "света нет")),
-    ("water_supply", ("вода", "воды", "су жоқ", "су құбыр", "su joq", "подачу воды", "труба", "порыв")),
+    ("water_supply", ("вода", "воды", "о воде", "су жоқ", "су құбыр", "su joq", "подачу воды", "труба", "порыв")),
     ("sewerage", ("канализац", "кәріз", "kariz", "кнс")),
     ("heating", ("отоплен", "батаре", "жылу", "jylu")),
     ("waste_removal", ("мусор", "қоқыс", "qoqys")),
     ("snow_cleaning", ("снег", "қар ", "мұз", "лед", "лёд")),
     ("street_lighting", ("фонар", "шамдар", "освещен")),
     ("road_condition", ("яма", "дорог", "шұңқыр", "shungqyr", "ремонт улиц")),
-    ("public_transport", ("автобус", "маршрут", "аялдама")),
+    ("public_transport", ("автобус", "маршрут", "аялдама", "ayaldama")),
     ("landscaping", ("дерев", "ағаш", "agash", "двор", "аулас")),
     ("illegal_construction", ("незакон", "самоволь", "павильон")),
-    ("construction", ("капитал", "строитель", "құрылыс")),
+    ("construction", ("капитал", "строитель", "құрылыс", "күрделі жөндеу", "kapitaldy jondeu")),
     ("land", ("земел", "участ", "жер ", "jer ")),
     ("education", ("школ", "мектеп", "детсад")),
-    ("social", ("соц", "выплат", "жәрдем")),
+    ("social", ("соц", "выплат", "жәрдем", "әлеуметтік", "aleumettik")),
 ]
 
 
@@ -143,11 +172,23 @@ def fallback_classification(text: str, settlement: str = "Кокшетау") -> 
     }
 
 
+def _normalise_model_topic(topic: Any, text: str) -> str:
+    """Constrain provider labels to routing keys and preserve verified unknown competence."""
+    rule_topic = _topic(text)
+    if rule_topic == "НЕ ОПРЕДЕЛЕНО":
+        return rule_topic
+    normalised = TOPIC_ALIASES.get(str(topic).strip().casefold())
+    if normalised and normalised != "НЕ ОПРЕДЕЛЕНО":
+        return normalised
+    return rule_topic
+
+
 def _validate_result(result: dict[str, Any], text: str, settlement: str) -> dict[str, Any]:
     missing = set(RESULT_SCHEMA["required"]) - result.keys()
     if missing:
         raise ValueError(f"Missing classification fields: {sorted(missing)}")
     result["confidence"] = max(0.0, min(1.0, float(result["confidence"])))
+    result["topic"] = _normalise_model_topic(result["topic"], text)
     result["routing_targets"] = _routing_targets(result["topic"], text, settlement)
     result["needs_human_review"] = result["confidence"] < 0.7
     return result

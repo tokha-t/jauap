@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "social",
+    "routing_targets": [
+      "Отдел занятости и социальных программ"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Citizen is requesting assistance to resolve an issue regarding non-receipt of social benefits, which falls under the scope of a request for service/assistance."
+  }
+}

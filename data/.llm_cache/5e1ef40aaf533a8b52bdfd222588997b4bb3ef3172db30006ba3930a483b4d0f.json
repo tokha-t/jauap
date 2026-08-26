@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "water_supply",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Пользователь сообщает о факте повреждения коммунальной инфраструктуры (течь из трубы), что классифицируется как сообщение о дефекте, требующем оперативного устранения."
+  }
+}

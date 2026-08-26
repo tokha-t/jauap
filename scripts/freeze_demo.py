@@ -17,7 +17,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from jauap.classify import SYSTEM_PROMPT, classify_text  # noqa: E402
+from jauap.classify import (  # noqa: E402
+    CLASSIFICATION_CONTRACT_SHA256,
+    SYSTEM_PROMPT,
+    classify_text,
+)
 from jauap.llm import is_cached, provider_key_env, provider_metadata  # noqa: E402
 from jauap.pipeline import process_records  # noqa: E402
 
@@ -47,17 +51,28 @@ def _load_checkpoint(metadata: dict[str, str], corpus_sha256: str) -> dict[str, 
     if not RESULTS_PATH.exists():
         return {}
     payload = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
+    expected = (
+        metadata["provider"],
+        metadata["model"],
+        corpus_sha256,
+        CLASSIFICATION_CONTRACT_SHA256,
+    )
+    actual = (
+        payload.get("provider"),
+        payload.get("model"),
+        payload.get("corpus_sha256"),
+        payload.get("classification_contract_sha256"),
+    )
+    if actual != expected:
+        raise SystemExit(
+            "Existing freeze checkpoint belongs to a different provider, model, corpus, "
+            "or classification contract; "
+            "move it aside before starting another run."
+        )
     if payload.get("status") == "complete":
         raise SystemExit(
             f"{RESULTS_PATH} is already complete for "
             f"{payload.get('provider', 'unknown')}/{payload.get('model', 'unknown')}."
-        )
-    expected = (metadata["provider"], metadata["model"], corpus_sha256)
-    actual = (payload.get("provider"), payload.get("model"), payload.get("corpus_sha256"))
-    if actual != expected:
-        raise SystemExit(
-            "Existing freeze checkpoint belongs to a different provider, model, or corpus; "
-            "move it aside before starting another run."
         )
     classifications = payload.get("classifications", {})
     if not isinstance(classifications, dict):
@@ -78,6 +93,7 @@ def _checkpoint_payload(
         "provider": metadata["provider"],
         "model": metadata["model"],
         "classification_source": f"{metadata['provider']} API via classify_text",
+        "classification_contract_sha256": CLASSIFICATION_CONTRACT_SHA256,
         "corpus_sha256": corpus_sha256,
         "processed_cases": len(classifications),
         "total_cases": total,
@@ -95,10 +111,49 @@ def _arguments() -> argparse.Namespace:
         default=float(os.environ.get("JAUAP_FREEZE_DELAY", "4")),
         help="Seconds to wait after each uncached provider call (default: 4).",
     )
+    parser.add_argument(
+        "--retries",
+        type=int,
+        default=int(os.environ.get("JAUAP_FREEZE_RETRIES", "3")),
+        help="Retries for a record that transiently degrades to fallback (default: 3).",
+    )
+    parser.add_argument(
+        "--retry-delay",
+        type=float,
+        default=float(os.environ.get("JAUAP_FREEZE_RETRY_DELAY", "30")),
+        help="Base seconds between retries; backoff is linear (default: 30).",
+    )
     arguments = parser.parse_args()
     if arguments.delay < 0:
         parser.error("--delay must be zero or greater")
+    if arguments.retries < 0:
+        parser.error("--retries must be zero or greater")
+    if arguments.retry_delay < 0:
+        parser.error("--retry-delay must be zero or greater")
     return arguments
+
+
+def _classify_with_retry(
+    record: dict[str, Any],
+    *,
+    retries: int,
+    retry_delay: float,
+) -> dict[str, Any]:
+    """Retry transient provider degradation without ever checkpointing fallback output."""
+    for attempt in range(retries + 1):
+        result = classify_text(record["raw_text"], record.get("settlement", "Кокшетау"))
+        if not result.get("warning"):
+            return result
+        if attempt < retries:
+            wait_seconds = retry_delay * (attempt + 1)
+            print(
+                f"{record['id']} degraded to fallback; retry "
+                f"{attempt + 1}/{retries} in {wait_seconds:g}s.",
+                flush=True,
+            )
+            if wait_seconds:
+                time.sleep(wait_seconds)
+    raise RuntimeError(f"{record['id']} still degraded after {retries} retries")
 
 
 def main() -> None:
@@ -125,12 +180,17 @@ def main() -> None:
         if appeal_id in classifications:
             continue
         cached_before_call = is_cached(SYSTEM_PROMPT, record["raw_text"])
-        result = classify_text(record["raw_text"], record.get("settlement", "Кокшетау"))
-        if result.get("warning"):
+        try:
+            result = _classify_with_retry(
+                record,
+                retries=arguments.retries,
+                retry_delay=arguments.retry_delay,
+            )
+        except RuntimeError:
             raise SystemExit(
                 f"{appeal_id} degraded to fallback; checkpoint retained at "
                 f"{len(classifications)}/{len(records)}. Retry later."
-            )
+            ) from None
         classifications[appeal_id] = result
         checkpoint = _checkpoint_payload(
             metadata=metadata,
@@ -159,6 +219,7 @@ def main() -> None:
         "provider": metadata["provider"],
         "model": metadata["model"],
         "classification_source": f"{metadata['provider']} API via classify_text",
+        "classification_contract_sha256": CLASSIFICATION_CONTRACT_SHA256,
         "corpus_sha256": corpus_sha256,
         "case_count": len(cases),
         "cases": cases,

@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "snow_cleaning",
+    "routing_targets": [
+      "ТОО «Кокше Тазалык»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о факте невыполнения работ по уборке снега, что классифицируется как сообщение о дефекте в работе коммунальных служб."
+  }
+}

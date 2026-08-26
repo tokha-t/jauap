@@ -18,7 +18,7 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import folium_static
 
-from jauap.classify import FALLBACK_NOTICE
+from jauap.classify import CLASSIFICATION_CONTRACT_SHA256, FALLBACK_NOTICE
 from jauap.deadline_engine import (
     extension_deadline,
     legal_tooltip,
@@ -26,7 +26,7 @@ from jauap.deadline_engine import (
     working_days_between,
 )
 from jauap.draft import DRAFT_BANNER, generate_cluster_notifications
-from jauap.llm import provider_key_env, provider_metadata
+from jauap.llm import PRIMARY_PROVIDER, provider_key_env, provider_metadata
 from jauap.pipeline import process_records
 
 
@@ -90,9 +90,10 @@ def _read_frozen_demo() -> dict[str, Any]:
     cases = payload.get("cases")
     if (
         payload.get("status") != "complete"
-        or provider not in {"gemini", "groq", "anthropic"}
+        or provider != PRIMARY_PROVIDER
         or source != f"{provider} API via classify_text"
         or not isinstance(payload.get("model"), str)
+        or payload.get("classification_contract_sha256") != CLASSIFICATION_CONTRACT_SHA256
         or payload.get("case_count") != 250
         or not isinstance(cases, list)
         or len(cases) != 250
@@ -473,11 +474,11 @@ with st.sidebar:
     provider_label = selected_backend["provider"].capitalize()
     mode = st.radio("Источник обработки", ["Демо · офлайн", f"Живой ввод · {provider_label}"], index=0)
     st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
-    st.caption("Ввод API-ключа в интерфейсе — Скоро.")
+    st.caption("Основной провайдер: Gemini. Ввод API-ключа в интерфейсе — Скоро.")
     frozen_backend = _frozen_demo_metadata()
     if frozen_backend:
         st.caption(
-            f"Замороженные результаты: {frozen_backend['provider']} · {frozen_backend['model']}"
+            f"Замороженные результаты: {frozen_backend['provider'].capitalize()} · {frozen_backend['model']}"
         )
     else:
         st.caption("Замороженные результаты ещё не созданы.")
