@@ -33,14 +33,7 @@ def _extract_json(text: str) -> dict[str, Any]:
 
 
 def complete(system: str, user: str, schema: dict | None = None) -> dict | str:
-    """Complete one prompt, with all provider access and caching in this function.
-
-    ``JAUAP_OFFLINE=1`` is a hard network kill switch. The app itself loads the
-    frozen demo results in that mode and therefore never calls this function.
-    """
-    if os.environ.get("JAUAP_OFFLINE") == "1":
-        raise RuntimeError("LLM calls are disabled while JAUAP_OFFLINE=1")
-
+    """Complete one prompt, with all provider access and caching in this function."""
     model = os.environ.get("JAUAP_MODEL", DEFAULT_MODEL)
     cache_path = _cache_path(system, user, model)
     if cache_path.exists():

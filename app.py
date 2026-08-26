@@ -18,6 +18,7 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import folium_static
 
+from jauap.classify import FALLBACK_NOTICE
 from jauap.deadline_engine import (
     extension_deadline,
     legal_tooltip,
@@ -209,7 +210,7 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
         st.info("Очередь пуста. Загрузите демо-набор или добавьте синтетические обращения.")
         return
     if st.session_state.get("warnings"):
-        st.warning(f"Резервная классификация применена к {len(st.session_state.warnings)} обращениям; они отмечены для проверки.")
+        st.warning(FALLBACK_NOTICE)
 
     appeal_types = st.multiselect("Тип", sorted({case["appeal_type"] for case in cases}))
     topics = st.multiselect("Тема", sorted({case["topic"] for case in cases}))
@@ -430,12 +431,12 @@ st.markdown('<div class="demo-banner">Демонстрационная верс�
 with st.sidebar:
     st.header("Режим")
     forced_offline = os.environ.get("JAUAP_OFFLINE") == "1"
-    mode = st.radio("Источник обработки", ["Демо · офлайн", "Живой ввод · Anthropic"], index=0 if forced_offline else 0)
+    mode = st.radio("Источник обработки", ["Демо · офлайн", "Живой ввод · Anthropic"], index=0)
     st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
     if forced_offline:
-        st.caption("JAUAP_OFFLINE=1: сетевые вызовы аппаратно отключены; живой ввод перейдёт на резервные правила.")
+        st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод проверяет ключ окружения.")
     elif mode.startswith("Живой"):
-        st.caption("Для живого режима нужны ANTHROPIC_API_KEY и JAUAP_MODEL. Все вызовы кешируются на диске.")
+        st.caption("Ввод API-ключа в интерфейсе — Скоро. Пока используется ANTHROPIC_API_KEY из окружения; без него — резервные правила.")
     st.divider()
     st.caption("КАТО 111010000 · Кокшетау · внутренний операторский контур")
 
