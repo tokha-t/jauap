@@ -143,11 +143,12 @@ def fallback_classification(text: str, settlement: str = "Кокшетау") -> 
     }
 
 
-def _validate_result(result: dict[str, Any]) -> dict[str, Any]:
+def _validate_result(result: dict[str, Any], text: str, settlement: str) -> dict[str, Any]:
     missing = set(RESULT_SCHEMA["required"]) - result.keys()
     if missing:
         raise ValueError(f"Missing classification fields: {sorted(missing)}")
     result["confidence"] = max(0.0, min(1.0, float(result["confidence"])))
+    result["routing_targets"] = _routing_targets(result["topic"], text, settlement)
     result["needs_human_review"] = result["confidence"] < 0.7
     return result
 
@@ -157,7 +158,7 @@ def classify_text(text: str, settlement: str = "Кокшетау") -> dict[str, 
         result = complete(SYSTEM_PROMPT, text, RESULT_SCHEMA)
         if not isinstance(result, dict):
             raise ValueError("Classifier did not return an object")
-        return _validate_result(result)
+        return _validate_result(result, text, settlement)
     except Exception:
         return fallback_classification(text, settlement)
 

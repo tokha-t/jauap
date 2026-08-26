@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import hashlib
 from collections import Counter
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -67,7 +66,7 @@ def main() -> None:
         raise SystemExit("FAIL: appeal_type accuracy is 100%; investigate a ground-truth leak.")
 
     score_payload = {
-        "generated_at": datetime.now().replace(microsecond=0).isoformat(),
+        "generated_at": results.get("generated_at"),
         "sample_size": len(cases),
         "results_sha256": hashlib.sha256(result_bytes).hexdigest(),
         "accuracy": accuracies,
