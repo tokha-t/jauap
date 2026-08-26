@@ -161,49 +161,16 @@ def classify_text(text: str, settlement: str = "Кокшетау") -> dict[str, 
         return fallback_classification(text, settlement)
 
 
-def demo_classification(record: dict[str, Any]) -> dict[str, Any]:
-    """Use committed synthetic ground truth when freezing the offline demo."""
-    expected = record["expected"]
-    text = record["raw_text"]
-    topic = expected["topic"]
-    settlement = expected.get("settlement", "Кокшетау")
-    targets = expected.get("routing_targets") or _routing_targets(topic, text, settlement)
-    confidence = float(expected.get("confidence", 0.94))
-    hard_case = record.get("hard_case") or ""
-    urgency = _urgency(text)
-    return {
-        "appeal_type": expected["appeal_type"],
-        "topic": topic,
-        "routing_targets": targets,
-        "language_detected": record["language_detected"],
-        "urgency": urgency,
-        "confidence": confidence,
-        "reasoning": (
-            "Обращение содержит два самостоятельных вопроса и разделено по ст. 65(2)."
-            if hard_case == "multi_request_split_65_2"
-            else "Содержание и требуемое действие соответствуют указанным типу обращения и компетенции."
-        ),
-        "needs_human_review": confidence < 0.7,
-    }
-
-
 def classify_batch(
     records: list[dict[str, Any]],
     *,
-    frozen_demo: bool = False,
     on_warning: Callable[[str], None] | None = None,
 ) -> list[dict[str, Any]]:
     """Classify every record independently so one failure never kills a batch."""
     outputs: list[dict[str, Any]] = []
     for record in records:
-        if frozen_demo and "expected" in record:
-            result = demo_classification(record)
-        elif frozen_demo:
-            settlement = record.get("expected", {}).get("settlement", "Кокшетау")
-            result = fallback_classification(record["raw_text"], settlement)
-        else:
-            settlement = record.get("expected", {}).get("settlement", "Кокшетау")
-            result = classify_text(record["raw_text"], settlement)
+        settlement = record.get("settlement", "Кокшетау")
+        result = classify_text(record["raw_text"], settlement)
         if result.get("warning") and on_warning:
             on_warning(f"{record.get('id', 'без ID')}: {result['warning']}")
         outputs.append({"id": record.get("id"), **result})

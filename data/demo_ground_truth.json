@@ -1,0 +1,1763 @@
+{
+  "ground_truth": {
+    "AP-0001": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0002": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0003": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0004": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0005": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0006": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0007": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0008": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0009": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0010": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0011": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0012": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0013": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0014": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0015": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0016": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0017": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0018": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0019": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0020": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0021": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Красный Яр",
+      "routing_targets": [
+        "Аппарат акима Красноярского сельского округа"
+      ],
+      "confidence": 0.94
+    },
+    "AP-0022": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Красный Яр",
+      "routing_targets": [
+        "Аппарат акима Красноярского сельского округа"
+      ],
+      "confidence": 0.94
+    },
+    "AP-0023": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кызыл-Жулдыз",
+      "routing_targets": [
+        "Аппарат акима Красноярского сельского округа"
+      ],
+      "confidence": 0.94
+    },
+    "AP-0024": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": [
+        "Отдел ЖКХ, ПТ и АД",
+        "Отдел земельных отношений, архитектуры и градостроительства"
+      ],
+      "confidence": 0.94
+    },
+    "AP-0025": {
+      "appeal_type": "жалоба",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0026": {
+      "appeal_type": "запрос",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0027": {
+      "appeal_type": "сообщение",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0028": {
+      "appeal_type": "жалоба",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.62
+    },
+    "AP-0029": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0030": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0031": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0032": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0033": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0034": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0035": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0036": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0037": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0038": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0039": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0040": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0041": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0042": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0043": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0044": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0045": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0046": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0047": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0048": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0049": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0050": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0051": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0052": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0053": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0054": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0055": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0056": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0057": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0058": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0059": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0060": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0061": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0062": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0063": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0064": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0065": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0066": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0067": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0068": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0069": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0070": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0071": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0072": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0073": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0074": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0075": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0076": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0077": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0078": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0079": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0080": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0081": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0082": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0083": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0084": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0085": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0086": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0087": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0088": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0089": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0090": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0091": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0092": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0093": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0094": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0095": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0096": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0097": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0098": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0099": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0100": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0101": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0102": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0103": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0104": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0105": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0106": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0107": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0108": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0109": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0110": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0111": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0112": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0113": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0114": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0115": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0116": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0117": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0118": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0119": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0120": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0121": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0122": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0123": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0124": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0125": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0126": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0127": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0128": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0129": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0130": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0131": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0132": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0133": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0134": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0135": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0136": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0137": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0138": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0139": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0140": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0141": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0142": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0143": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0144": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0145": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0146": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0147": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0148": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0149": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0150": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0151": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0152": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0153": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0154": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0155": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0156": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0157": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0158": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0159": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0160": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0161": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0162": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0163": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0164": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0165": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0166": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0167": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0168": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0169": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0170": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0171": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0172": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0173": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0174": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0175": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0176": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0177": {
+      "appeal_type": "сообщение",
+      "topic": "land",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0178": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0179": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0180": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0181": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0182": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0183": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0184": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0185": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0186": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0187": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0188": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0189": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0190": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0191": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0192": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0193": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0194": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0195": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0196": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0197": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0198": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0199": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0200": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0201": {
+      "appeal_type": "сообщение",
+      "topic": "social",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0202": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0203": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0204": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0205": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0206": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0207": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0208": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0209": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0210": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0211": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0212": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0213": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0214": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0215": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0216": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0217": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0218": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0219": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0220": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0221": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0222": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0223": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0224": {
+      "appeal_type": "сообщение",
+      "topic": "snow_cleaning",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0225": {
+      "appeal_type": "сообщение",
+      "topic": "electricity",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0226": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0227": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0228": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0229": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0230": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0231": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0232": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0233": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0234": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0235": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0236": {
+      "appeal_type": "сообщение",
+      "topic": "public_transport",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0237": {
+      "appeal_type": "сообщение",
+      "topic": "heating",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0238": {
+      "appeal_type": "сообщение",
+      "topic": "sewerage",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0239": {
+      "appeal_type": "сообщение",
+      "topic": "education",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0240": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0241": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0242": {
+      "appeal_type": "сообщение",
+      "topic": "landscaping",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0243": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0244": {
+      "appeal_type": "сообщение",
+      "topic": "construction",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0245": {
+      "appeal_type": "сообщение",
+      "topic": "road_condition",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0246": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0247": {
+      "appeal_type": "сообщение",
+      "topic": "water_supply",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0248": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0249": {
+      "appeal_type": "сообщение",
+      "topic": "waste_removal",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    },
+    "AP-0250": {
+      "appeal_type": "сообщение",
+      "topic": "street_lighting",
+      "settlement": "Кокшетау",
+      "routing_targets": null,
+      "confidence": 0.94
+    }
+  }
+}

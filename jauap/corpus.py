@@ -18,6 +18,7 @@ from .deadline_engine import is_working_day
 SEED = 221_241
 AS_OF = date(2026, 8, 26)
 DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "demo_corpus.json"
+GROUND_TRUTH_PATH = Path(__file__).resolve().parents[1] / "data" / "demo_ground_truth.json"
 CHANNELS = ["eOtinish", "109", "WhatsApp", "Telegram", "приём граждан"]
 NAMES = [
     "Айгүл Серікқызы", "Шыңғыс Омаров", "Данияр Ахметов", "Мадина Қасымова",
@@ -158,7 +159,8 @@ def _record(
         "language_detected": language,
         "synthetic": True,
         "hard_case": hard_case,
-        "expected": {
+        "settlement": settlement,
+        "_ground_truth": {
             "appeal_type": appeal_type,
             "topic": topic,
             "settlement": settlement,
@@ -219,7 +221,7 @@ def _hard_cases() -> list[dict]:
 def generate() -> list[dict]:
     rng = random.Random(SEED)
     records = _hard_cases()
-    used_topics = Counter(record["expected"]["topic"] for record in records if record["expected"]["topic"] in TOPIC_QUOTAS)
+    used_topics = Counter(record["_ground_truth"]["topic"] for record in records if record["_ground_truth"]["topic"] in TOPIC_QUOTAS)
     used_languages = Counter(record["language_detected"] for record in records)
 
     topic_pool = [topic for topic, quota in TOPIC_QUOTAS.items() for _ in range(quota - used_topics[topic])]
@@ -248,7 +250,7 @@ def validate(records: list[dict]) -> None:
     assert len(records) == 250
     assert len({record["id"] for record in records}) == 250
     assert Counter(record["language_detected"] for record in records) == LANGUAGE_QUOTAS
-    expected_topics = Counter(record["expected"]["topic"] for record in records)
+    expected_topics = Counter(record["_ground_truth"]["topic"] for record in records)
     for topic, count in TOPIC_QUOTAS.items():
         assert expected_topics[topic] == count, (topic, expected_topics[topic], count)
     hard_cases = Counter(record["hard_case"] for record in records if record["hard_case"])
@@ -266,8 +268,17 @@ def validate(records: list[dict]) -> None:
 def main() -> None:
     records = generate()
     validate(records)
+    ground_truth = {
+        record["id"]: record.pop("_ground_truth")
+        for record in records
+    }
     DATA_PATH.write_text(json.dumps(records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    GROUND_TRUTH_PATH.write_text(
+        json.dumps({"ground_truth": ground_truth}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(f"Wrote {len(records)} synthetic appeals to {DATA_PATH}")
+    print(f"Wrote scoring truth to {GROUND_TRUTH_PATH}")
     print("Language distribution:", dict(Counter(record["language_detected"] for record in records)))
     print("MANDATORY: Tokha must review every kk, mixed, and latin appeal before the demo.")
 

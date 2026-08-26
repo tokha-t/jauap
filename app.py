@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import html
+import hashlib
 import io
 import json
 import math
 import os
 import warnings
-from dataclasses import asdict
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -18,26 +18,20 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import folium_static
 
-from jauap.classify import classify_batch
-from jauap.cluster import cluster_cases
 from jauap.deadline_engine import (
-    DEADLINES,
-    deadline_for,
     extension_deadline,
     legal_tooltip,
     notification_deadline,
-    register_date,
     working_days_between,
 )
-from jauap.draft import DRAFT_BANNER, draft_response, generate_cluster_notifications
-from jauap.geo import resolve_location
-from jauap.risk import apply_risk
+from jauap.draft import DRAFT_BANNER, generate_cluster_notifications
+from jauap.pipeline import process_records
 
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
-DEMO_CORPUS = DATA_DIR / "demo_corpus.json"
 DEMO_RESULTS = DATA_DIR / "demo_results.json"
+DEMO_SCORE = DATA_DIR / "demo_score.json"
 ROUTING = json.loads((DATA_DIR / "routing.json").read_text(encoding="utf-8"))
 
 RISK_LABELS = {"green": "🟢 Низкий", "amber": "🟠 Средний", "red": "🔴 Высокий"}
@@ -76,20 +70,6 @@ st.markdown(
 )
 
 
-def _route_metadata(classification: dict[str, Any]) -> dict[str, Any]:
-    targets = classification["routing_targets"]
-    rural = targets and targets[0].startswith("Аппарат акима")
-    if rural:
-        return {
-            "operational_owner": targets[0], "statutory_clock_holder": targets[0],
-            "entity_type": "ГУ", "oblast_escalation": None,
-        }
-    route = ROUTING.get(classification["topic"], ROUTING["НЕ ОПРЕДЕЛЕНО"])
-    return {key: route.get(key) for key in (
-        "operational_owner", "statutory_clock_holder", "entity_type", "oblast_escalation"
-    )}
-
-
 def _embed_leaflet_assets(fmap: folium.Map) -> None:
     """Replace Folium's CDN defaults with same-origin committed assets."""
     fmap.default_js = [
@@ -99,54 +79,13 @@ def _embed_leaflet_assets(fmap: folium.Map) -> None:
     fmap.default_css = [("leaflet_css", "/app/static/leaflet.css")]
 
 
-def process_records(records: list[dict[str, Any]], *, frozen_demo: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
-    warnings: list[str] = []
-    classified = classify_batch(records, frozen_demo=frozen_demo, on_warning=warnings.append)
-    by_id = {result["id"]: result for result in classified}
-    today = date.today()
-    cases: list[dict[str, Any]] = []
-    for record in records:
-        result = by_id[record["id"]]
-        received = datetime.fromisoformat(record["received_at"])
-        registered = register_date(received)
-        appeal_type = result["appeal_type"] if result["appeal_type"] in DEADLINES else "сообщение"
-        deadline = deadline_for(appeal_type, registered)
-        location = resolve_location(record["raw_text"], use_llm=not frozen_demo)
-        route = _route_metadata(result)
-        case = {
-            "id": record["id"], "raw_text": record["raw_text"], "received_at": record["received_at"],
-            "channel": record.get("channel", "ввод оператора"),
-            "applicant_name": record.get("applicant_name", "Синтетический заявитель"),
-            "language_detected": result["language_detected"], "appeal_type": appeal_type,
-            "topic": result["topic"], "routing_targets": result["routing_targets"], **route,
-            "registered_date": registered.isoformat(), "deadline": deadline.isoformat(),
-            "deadline_basis": DEADLINES[appeal_type]["basis"],
-            "working_days_remaining": working_days_between(today, deadline),
-            "deemed_refusal_date": deadline.isoformat(),
-            "deemed_refusal": working_days_between(today, deadline) < 0,
-            "location": asdict(location) if location else None, "cluster_id": None,
-            "escalation_risk": 0.0, "risk_factors": [],
-            "misroute_cost_avoided": 0 if result["topic"] == "НЕ ОПРЕДЕЛЕНО" else 3,
-            "draft_response": None, "confidence": result["confidence"],
-            "needs_human_review": bool(result["needs_human_review"] or location is None),
-            "classification_reasoning": result["reasoning"], "urgency": result["urgency"],
-            "emotional_escalation": False,
-        }
-        cases.append(case)
-
-    clusters = cluster_cases(cases)
-    apply_risk(cases, clusters)
-    for case in cases:
-        case["draft_response"] = draft_response(case, frozen_demo=frozen_demo)
-    return cases, clusters, warnings
-
-
 def _load_frozen_demo() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
     if DEMO_RESULTS.exists():
         payload = json.loads(DEMO_RESULTS.read_text(encoding="utf-8"))
+        if payload.get("classification_source") != "Anthropic API via classify_text":
+            raise ValueError("Legacy demo results are not model-produced")
         return payload["cases"], payload["clusters"], []
-    records = json.loads(DEMO_CORPUS.read_text(encoding="utf-8"))
-    return process_records(records, frozen_demo=True)
+    raise FileNotFoundError("Run scripts/freeze_demo.py before loading the offline demo")
 
 
 def _parse_upload(upload: Any) -> list[str]:
@@ -259,9 +198,7 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
                 st.warning("Добавьте хотя бы одно обращение.")
             else:
                 with st.spinner("Классификация и маршрутизация…"):
-                    loaded_cases, loaded_clusters, warnings = process_records(
-                        _live_records(texts), frozen_demo=bool(st.session_state.get("offline_mode", True))
-                    )
+                    loaded_cases, loaded_clusters, warnings = process_records(_live_records(texts))
                 st.session_state.cases, st.session_state.clusters = loaded_cases, loaded_clusters
                 st.session_state.warnings = warnings
                 st.rerun()
@@ -464,6 +401,18 @@ def summary_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> 
     cols[2].metric("В срок", f"{in_time:.0%}")
     cols[3].metric("Высокий риск", high_risk, help=ENFORCEMENT_HELP)
     cols[4].metric("Уточнить компетенцию", unverified)
+    try:
+        score = json.loads(DEMO_SCORE.read_text(encoding="utf-8"))
+        result_digest = hashlib.sha256(DEMO_RESULTS.read_bytes()).hexdigest()
+        accuracy = (
+            score.get("accuracy", {}).get("appeal_type")
+            if score.get("results_sha256") == result_digest
+            else None
+        )
+    except (OSError, ValueError, TypeError):
+        accuracy = None
+    if isinstance(accuracy, (int, float)):
+        st.metric("Точность типа обращения на демо-наборе", f"{accuracy:.1%}")
     st.subheader("Язык обращений")
     names = {"ru": "Русский", "kk": "Қазақша", "mixed": "Смешанные", "latin": "Латиница"}
     counts = pd.Series([case["language_detected"] for case in cases]).value_counts()
