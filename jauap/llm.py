@@ -16,7 +16,7 @@ PRIMARY_PROVIDER = "gemini"
 PROVIDERS = {
     "gemini": {
         "key_env": "GOOGLE_API_KEY",
-        "default_model": "gemini-3.1-flash-lite",
+        "default_model": "gemini-3.5-flash-lite",
         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
     },
     "groq": {

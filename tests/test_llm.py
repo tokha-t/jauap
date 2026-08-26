@@ -65,7 +65,7 @@ class LlmBoundaryTests(unittest.TestCase):
     def test_gemini_is_the_safe_default(self) -> None:
         self.assertEqual(
             llm.provider_metadata(),
-            {"provider": "gemini", "model": "gemini-3.1-flash-lite"},
+            {"provider": "gemini", "model": "gemini-3.5-flash-lite"},
         )
         self.assertEqual(llm.provider_key_env(), "GOOGLE_API_KEY")
 

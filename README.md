@@ -20,7 +20,7 @@ JAUAP_OFFLINE=1 streamlit run app.py
 ```bash
 export JAUAP_PROVIDER="gemini"
 export GOOGLE_API_KEY="..."
-# export JAUAP_MODEL="gemini-3.1-flash-lite"  # необязательное переопределение
+# export JAUAP_MODEL="gemini-3.5-flash-lite"  # необязательное переопределение
 streamlit run app.py
 ```
 
