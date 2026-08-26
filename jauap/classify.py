@@ -12,6 +12,7 @@ from .llm import complete
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 ROUTING = json.loads((DATA_DIR / "routing.json").read_text(encoding="utf-8"))
+FALLBACK_NOTICE = "Резервный режим: классификация по правилам, без модели. Уверенность занижена намеренно."
 
 APPEAL_DEFINITIONS = """АППК статья 4 — типы обращений:
 - заявление — Request for assistance in exercising rights/freedoms/lawful interests
@@ -130,7 +131,7 @@ def fallback_classification(text: str, settlement: str = "Кокшетау") -> 
     """Conservative fallback required by §10.4; confidence remains 0.3."""
     topic = _topic(text)
     return {
-        "appeal_type": "сообщение",
+        "appeal_type": _appeal_type(text),
         "topic": topic,
         "routing_targets": _routing_targets(topic, text, settlement),
         "language_detected": _language(text),
@@ -138,7 +139,7 @@ def fallback_classification(text: str, settlement: str = "Кокшетау") -> 
         "confidence": 0.3,
         "reasoning": "Резервная классификация по ключевым признакам; требуется проверка специалистом.",
         "needs_human_review": True,
-        "warning": "LLM недоступен — применена резервная классификация.",
+        "warning": FALLBACK_NOTICE,
     }
 
 
