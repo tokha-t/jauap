@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "heating",
+    "routing_targets": [
+      "ГКП на ПХВ «Кокшетау Жылу»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 1.0,
+    "reasoning": "Пользователь сообщает о проблеме с отоплением (холодные батареи), что требует оперативного реагирования со стороны профильной организации."
+  }
+}

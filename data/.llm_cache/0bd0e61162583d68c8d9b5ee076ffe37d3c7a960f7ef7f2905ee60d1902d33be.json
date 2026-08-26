@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "water_supply",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Азамат Абая көшесіндегі су құбырының жарылуы туралы хабарлап отыр, бұл инфрақұрылымдық апат болып табылады және «Көкшетау Су Арнасы» мен ЖКХ бөліміне бағытталады."
+  }
+}

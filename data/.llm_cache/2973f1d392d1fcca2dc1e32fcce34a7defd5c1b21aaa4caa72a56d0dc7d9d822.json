@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о наличии большой ямы на дороге, препятствующей движению транспорта, что требует оперативного реагирования со стороны ответственного органа."
+  }
+}

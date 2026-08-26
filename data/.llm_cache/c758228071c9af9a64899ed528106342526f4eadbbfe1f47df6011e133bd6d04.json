@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "water_supply",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Азамат Абай көшесіндегі су құбырының жарылуы туралы хабарлап отыр, бұл шұғыл шара қолдануды және «Көкшетау Су Арнасы» кәсіпорнына бағыттауды талап етеді."
+  }
+}

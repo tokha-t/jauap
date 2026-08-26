@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Автор сообщает об опасном сухом дереве, что требует оперативного вмешательства для предотвращения травматизма, поэтому классифицировано как сообщение с повышенным уровнем срочности."
+  }
+}

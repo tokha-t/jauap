@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "education",
+    "routing_targets": [
+      "Отдел образования по г. Кокшетау упр. образования Акмолинской области"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Поступило сообщение о ненадлежащем состоянии учебного заведения, что создает угрозу здоровью учащихся и требует срочного принятия мер."
+  }
+}

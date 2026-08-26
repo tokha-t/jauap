@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "heating",
+    "routing_targets": [
+      "ГКП на ПХВ «Кокшетау Жылу»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 1.0,
+    "reasoning": "Заявитель сообщает о ненадлежащем оказании услуг по отоплению в жилом доме, что требует оперативного вмешательства профильных служб."
+  }
+}

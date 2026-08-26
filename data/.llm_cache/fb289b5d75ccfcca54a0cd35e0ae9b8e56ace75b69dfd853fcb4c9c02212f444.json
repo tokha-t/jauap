@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "social",
+    "routing_targets": [
+      "Отдел занятости и социальных программ"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 1.0,
+    "reasoning": "Заявитель просит оказать содействие в получении социальной выплаты, что относится к компетенции отдела занятости и социальных программ."
+  }
+}

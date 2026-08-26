@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "sewerage",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "emergency",
+    "confidence": 1.0,
+    "reasoning": "The appeal reports a sewage leak, which constitutes a sanitary hazard and requires immediate intervention by the utility provider."
+  }
+}

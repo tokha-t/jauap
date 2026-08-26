@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "waste_removal",
+    "routing_targets": [
+      "ТОО «Кокше Тазалык»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 1.0,
+    "reasoning": "Заявитель сообщает о нарушении графика вывоза мусора, что требует вмешательства ответственной организации и контроля со стороны отдела ЖКХ."
+  }
+}

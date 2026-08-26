@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "heating",
+    "routing_targets": [
+      "ГКП на ПХВ «Кокшетау Жылу»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Заявитель сообщает о повторном обращении по поводу отсутствия отопления, что классифицируется как жалоба на бездействие ответственных органов."
+  }
+}

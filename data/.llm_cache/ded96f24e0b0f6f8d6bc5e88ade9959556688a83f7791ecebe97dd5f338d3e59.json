@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "routine",
+    "confidence": 1.0,
+    "reasoning": "Автор запрашивает информацию о графике ремонтных работ на конкретной улице, что классифицируется как запрос и относится к компетенции отдела ЖКХ."
+  }
+}

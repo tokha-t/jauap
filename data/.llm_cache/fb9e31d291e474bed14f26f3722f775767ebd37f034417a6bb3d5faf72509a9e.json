@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "sewerage",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.98,
+    "reasoning": "Гражданин жалуется на утечку канализационных вод, что требует оперативного вмешательства службы водоканала и отдела ЖКХ для предотвращения санитарной угрозы."
+  }
+}

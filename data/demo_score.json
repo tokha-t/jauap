@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-08-26T22:21:01",
+  "sample_size": 250,
+  "results_sha256": "5a9de9bb39396007e5aef8c0a364ffba8ff4b5ee5a5ac177008e1055d6b9609c",
+  "accuracy": {
+    "appeal_type": 0.432,
+    "topic": 0.944,
+    "settlement": 1.0
+  }
+}
