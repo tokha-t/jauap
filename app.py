@@ -259,31 +259,32 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
         st.info("Загрузите обращения на вкладке «Очередь», чтобы построить карту.")
         return
     view = st.radio("Режим отображения", ["Показать все обращения", "Показать кластеры"], horizontal=True)
-    offline_map = bool(st.session_state.get("offline_mode", True))
     fmap = folium.Map(
         location=[53.284, 69.395], zoom_start=12,
-        tiles=None if offline_map else "CartoDB positron", control_scale=True,
+        tiles=None, min_zoom=11, max_zoom=15,
+        min_lat=53.19, max_lat=53.36, min_lon=69.28, max_lon=69.57,
+        max_bounds=True, control_scale=True,
     )
-    if offline_map:
-        _embed_leaflet_assets(fmap)
-        folium.Rectangle(
-            bounds=[[53.255, 69.345], [53.325, 69.455]], color="#8aa1b1",
-            weight=1, fill=True, fill_color="#f4f7f8", fill_opacity=1,
-            tooltip="Схематические границы демо-зоны Кокшетау",
-        ).add_to(fmap)
-        folium.Polygon(
-            locations=[[53.300, 69.345], [53.312, 69.355], [53.316, 69.378], [53.306, 69.384], [53.297, 69.366]],
-            color="#6099b5", fill=True, fill_color="#b9dcea", fill_opacity=.8,
-            tooltip="озеро Копа (схематично)",
-        ).add_to(fmap)
-        folium.PolyLine(
-            [[53.258, 69.352], [53.286, 69.359], [53.322, 69.348]],
-            color="#6099b5", weight=3, tooltip="р. Шағалалы",
-        ).add_to(fmap)
-        folium.PolyLine(
-            [[53.258, 69.432], [53.286, 69.420], [53.322, 69.439]],
-            color="#6099b5", weight=3, tooltip="р. Кылшакты",
-        ).add_to(fmap)
+    _embed_leaflet_assets(fmap)
+    folium.TileLayer(
+        tiles="/app/static/tiles/{z}/{x}/{y}.png",
+        attr='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        name="OpenStreetMap · офлайн", min_zoom=11, max_zoom=15,
+        max_native_zoom=15, no_wrap=True, overlay=False, control=False,
+    ).add_to(fmap)
+    folium.Polygon(
+        locations=[[53.300, 69.345], [53.312, 69.355], [53.316, 69.378], [53.306, 69.384], [53.297, 69.366]],
+        color="#6099b5", fill=True, fill_color="#b9dcea", fill_opacity=.8,
+        tooltip="озеро Копа (схематично)",
+    ).add_to(fmap)
+    folium.PolyLine(
+        [[53.258, 69.352], [53.286, 69.359], [53.322, 69.348]],
+        color="#6099b5", weight=3, tooltip="р. Шағалалы",
+    ).add_to(fmap)
+    folium.PolyLine(
+        [[53.258, 69.432], [53.286, 69.420], [53.322, 69.439]],
+        color="#6099b5", weight=3, tooltip="р. Кылшакты",
+    ).add_to(fmap)
     city_layer = folium.FeatureGroup(name="Кокшетау", show=True)
     rural_layer = folium.FeatureGroup(name="Красный Яр / Кызыл-Жулдыз", show=True)
     station_layer = folium.FeatureGroup(name="Станционный", show=True)
