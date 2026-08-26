@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
-"""Freeze honest Anthropic classifications for the offline demo corpus."""
+"""Freeze honest, resumable model classifications for the offline demo corpus."""
 
 from __future__ import annotations
 
+import argparse
+import hashlib
 import json
 import os
 import sys
+import time
 from datetime import date, datetime
 from pathlib import Path
+from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from jauap.classify import SYSTEM_PROMPT, classify_text  # noqa: E402
+from jauap.llm import is_cached, provider_key_env, provider_metadata  # noqa: E402
 from jauap.pipeline import process_records  # noqa: E402
 
 
@@ -20,37 +26,145 @@ CORPUS_PATH = ROOT / "data" / "demo_corpus.json"
 RESULTS_PATH = ROOT / "data" / "demo_results.json"
 
 
-def main() -> None:
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        raise SystemExit("ANTHROPIC_API_KEY is required; no demo results were written.")
+def _timestamp() -> str:
+    return datetime.now().astimezone().replace(microsecond=0).isoformat()
 
-    records = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
-    print(
-        f"Classifying {len(records)} appeals through Anthropic; cached records will be reused.",
-        flush=True,
-    )
-    cases, clusters, classifier_warnings = process_records(records, deterministic_support=True)
-    if classifier_warnings:
-        sample = "\n".join(classifier_warnings[:5])
-        raise SystemExit(
-            f"Model classification degraded for {len(classifier_warnings)} records; "
-            f"no demo results were written.\n{sample}"
-        )
 
-    payload = {
-        "generated_at": datetime.now().replace(microsecond=0).isoformat(),
-        "as_of_date": date.today().isoformat(),
-        "classification_source": "Anthropic API via classify_text",
-        "model": os.environ.get("JAUAP_MODEL", "claude-sonnet-4-5"),
-        "cases": cases,
-        "clusters": clusters,
-    }
-    temporary_path = RESULTS_PATH.with_suffix(".json.tmp")
+def _corpus_digest() -> str:
+    return hashlib.sha256(CORPUS_PATH.read_bytes()).hexdigest()
+
+
+def _write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
+    temporary_path = path.with_suffix(path.suffix + ".tmp")
     temporary_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    temporary_path.replace(RESULTS_PATH)
+    temporary_path.replace(path)
+
+
+def _load_checkpoint(metadata: dict[str, str], corpus_sha256: str) -> dict[str, dict[str, Any]]:
+    if not RESULTS_PATH.exists():
+        return {}
+    payload = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
+    if payload.get("status") == "complete":
+        raise SystemExit(
+            f"{RESULTS_PATH} is already complete for "
+            f"{payload.get('provider', 'unknown')}/{payload.get('model', 'unknown')}."
+        )
+    expected = (metadata["provider"], metadata["model"], corpus_sha256)
+    actual = (payload.get("provider"), payload.get("model"), payload.get("corpus_sha256"))
+    if actual != expected:
+        raise SystemExit(
+            "Existing freeze checkpoint belongs to a different provider, model, or corpus; "
+            "move it aside before starting another run."
+        )
+    classifications = payload.get("classifications", {})
+    if not isinstance(classifications, dict):
+        raise SystemExit("Existing freeze checkpoint is malformed.")
+    return classifications
+
+
+def _checkpoint_payload(
+    *,
+    metadata: dict[str, str],
+    corpus_sha256: str,
+    classifications: dict[str, dict[str, Any]],
+    total: int,
+) -> dict[str, Any]:
+    return {
+        "status": "in_progress",
+        "checkpointed_at": _timestamp(),
+        "provider": metadata["provider"],
+        "model": metadata["model"],
+        "classification_source": f"{metadata['provider']} API via classify_text",
+        "corpus_sha256": corpus_sha256,
+        "processed_cases": len(classifications),
+        "total_cases": total,
+        "classifications": classifications,
+    }
+
+
+def _arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Freeze provider-produced classifications with per-record checkpoints."
+    )
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=float(os.environ.get("JAUAP_FREEZE_DELAY", "4")),
+        help="Seconds to wait after each uncached provider call (default: 4).",
+    )
+    arguments = parser.parse_args()
+    if arguments.delay < 0:
+        parser.error("--delay must be zero or greater")
+    return arguments
+
+
+def main() -> None:
+    arguments = _arguments()
+    metadata = provider_metadata()
+    key_env = provider_key_env(metadata["provider"])
+    if not os.environ.get(key_env):
+        raise SystemExit(
+            f"{key_env} is required for JAUAP_PROVIDER={metadata['provider']}; "
+            "no provider call was attempted."
+        )
+
+    records = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+    corpus_sha256 = _corpus_digest()
+    classifications = _load_checkpoint(metadata, corpus_sha256)
+    print(
+        f"Freezing {len(records)} appeals through {metadata['provider']}/{metadata['model']}; "
+        f"resuming after {len(classifications)} completed records.",
+        flush=True,
+    )
+
+    for index, record in enumerate(records, start=1):
+        appeal_id = record["id"]
+        if appeal_id in classifications:
+            continue
+        cached_before_call = is_cached(SYSTEM_PROMPT, record["raw_text"])
+        result = classify_text(record["raw_text"], record.get("settlement", "Кокшетау"))
+        if result.get("warning"):
+            raise SystemExit(
+                f"{appeal_id} degraded to fallback; checkpoint retained at "
+                f"{len(classifications)}/{len(records)}. Retry later."
+            )
+        classifications[appeal_id] = result
+        checkpoint = _checkpoint_payload(
+            metadata=metadata,
+            corpus_sha256=corpus_sha256,
+            classifications=classifications,
+            total=len(records),
+        )
+        _write_json_atomic(RESULTS_PATH, checkpoint)
+        source = "cache" if cached_before_call else "provider"
+        print(f"[{index}/{len(records)}] {appeal_id} · {source} · checkpoint saved", flush=True)
+        if not cached_before_call and arguments.delay:
+            time.sleep(arguments.delay)
+
+    cases, clusters, classifier_warnings = process_records(records, deterministic_support=True)
+    if classifier_warnings:
+        sample = "\n".join(classifier_warnings[:5])
+        raise SystemExit(
+            f"Cached classification replay degraded for {len(classifier_warnings)} records; "
+            f"checkpoint retained.\n{sample}"
+        )
+
+    payload = {
+        "status": "complete",
+        "generated_at": _timestamp(),
+        "as_of_date": date.today().isoformat(),
+        "provider": metadata["provider"],
+        "model": metadata["model"],
+        "classification_source": f"{metadata['provider']} API via classify_text",
+        "corpus_sha256": corpus_sha256,
+        "case_count": len(cases),
+        "cases": cases,
+        "clusters": clusters,
+    }
+    _write_json_atomic(RESULTS_PATH, payload)
     print(f"Wrote {len(cases)} model-classified cases to {RESULTS_PATH}")
     print("Run scripts/score_demo.py and commit data/.llm_cache/ with the results.")
 

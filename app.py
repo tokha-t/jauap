@@ -26,6 +26,7 @@ from jauap.deadline_engine import (
     working_days_between,
 )
 from jauap.draft import DRAFT_BANNER, generate_cluster_notifications
+from jauap.llm import provider_key_env, provider_metadata
 from jauap.pipeline import process_records
 
 
@@ -80,13 +81,37 @@ def _embed_leaflet_assets(fmap: folium.Map) -> None:
     fmap.default_css = [("leaflet_css", "/app/static/leaflet.css")]
 
 
+def _read_frozen_demo() -> dict[str, Any]:
+    if not DEMO_RESULTS.exists():
+        raise FileNotFoundError("Run scripts/freeze_demo.py before loading the offline demo")
+    payload = json.loads(DEMO_RESULTS.read_text(encoding="utf-8"))
+    provider = payload.get("provider")
+    source = payload.get("classification_source")
+    cases = payload.get("cases")
+    if (
+        payload.get("status") != "complete"
+        or provider not in {"gemini", "groq", "anthropic"}
+        or source != f"{provider} API via classify_text"
+        or not isinstance(payload.get("model"), str)
+        or payload.get("case_count") != 250
+        or not isinstance(cases, list)
+        or len(cases) != 250
+    ):
+        raise ValueError("Demo results are incomplete or lack model provenance")
+    return payload
+
+
+def _frozen_demo_metadata() -> dict[str, str] | None:
+    try:
+        payload = _read_frozen_demo()
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+    return {"provider": payload["provider"], "model": payload["model"]}
+
+
 def _load_frozen_demo() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
-    if DEMO_RESULTS.exists():
-        payload = json.loads(DEMO_RESULTS.read_text(encoding="utf-8"))
-        if payload.get("classification_source") != "Anthropic API via classify_text":
-            raise ValueError("Legacy demo results are not model-produced")
-        return payload["cases"], payload["clusters"], []
-    raise FileNotFoundError("Run scripts/freeze_demo.py before loading the offline demo")
+    payload = _read_frozen_demo()
+    return payload["cases"], payload["clusters"], []
 
 
 def _parse_upload(upload: Any) -> list[str]:
@@ -183,7 +208,7 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
     paste = st.text_area("Вставьте обращения — по одному на строку", height=100, placeholder="Только синтетические данные; не вставляйте реальные персональные сведения.")
     upload = st.file_uploader("Или загрузите .txt, .csv, .json", type=["txt", "csv", "json"])
     load_col, process_col, _ = st.columns([1.45, 1.3, 3])
-    demo_ready = DEMO_RESULTS.exists()
+    demo_ready = _frozen_demo_metadata() is not None
     if load_col.button(
         "Загрузить демо-набор (250 обращений)",
         type="primary", width="stretch", disabled=not demo_ready,
@@ -439,13 +464,27 @@ st.markdown('<div class="demo-banner">Демонстрационная верс�
 with st.sidebar:
     st.header("Режим")
     forced_offline = os.environ.get("JAUAP_OFFLINE") == "1"
-    mode = st.radio("Источник обработки", ["Демо · офлайн", "Живой ввод · Anthropic"], index=0)
+    try:
+        selected_backend = provider_metadata()
+        selected_key_env = provider_key_env(selected_backend["provider"])
+    except ValueError:
+        selected_backend = {"provider": "ошибка конфигурации", "model": "—"}
+        selected_key_env = None
+    provider_label = selected_backend["provider"].capitalize()
+    mode = st.radio("Источник обработки", ["Демо · офлайн", f"Живой ввод · {provider_label}"], index=0)
     st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
     st.caption("Ввод API-ключа в интерфейсе — Скоро.")
+    frozen_backend = _frozen_demo_metadata()
+    if frozen_backend:
+        st.caption(
+            f"Замороженные результаты: {frozen_backend['provider']} · {frozen_backend['model']}"
+        )
+    else:
+        st.caption("Замороженные результаты ещё не созданы.")
     if forced_offline:
         st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод проверяет ключ окружения.")
-    elif mode.startswith("Живой"):
-        st.caption("Пока используется ANTHROPIC_API_KEY из окружения; без него — резервные правила.")
+    elif mode.startswith("Живой") and selected_key_env:
+        st.caption(f"Используется {selected_key_env} из окружения; без него — резервные правила.")
     st.divider()
     st.caption("КАТО 111010000 · Кокшетау · внутренний операторский контур")
 

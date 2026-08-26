@@ -55,6 +55,12 @@ def _cache_path(system: str, user: str, provider: str, model: str) -> Path:
     return CACHE_DIR / f"{digest}.json"
 
 
+def is_cached(system: str, user: str) -> bool:
+    """Report whether the selected provider/model already cached this prompt."""
+    metadata = provider_metadata()
+    return _cache_path(system, user, metadata["provider"], metadata["model"]).exists()
+
+
 def _extract_json(text: str) -> dict[str, Any]:
     candidate = text.strip()
     if candidate.startswith("```"):
