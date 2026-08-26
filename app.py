@@ -26,7 +26,7 @@ from jauap.deadline_engine import (
     working_days_between,
 )
 from jauap.draft import DRAFT_BANNER, generate_cluster_notifications
-from jauap.llm import PRIMARY_PROVIDER, provider_key_env, provider_metadata
+from jauap.llm import PRIMARY_PROVIDER, provider_key_env, provider_metadata, runtime_api_key
 from jauap.pipeline import process_records
 
 
@@ -204,7 +204,9 @@ def _case_detail(case: dict[str, Any], clusters: list[dict[str, Any]]) -> None:
         st.download_button("Скачать CSV уведомлений", csv_bytes, f"{cluster['cluster_id']}-notifications.csv", "text/csv")
 
 
-def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None:
+def queue_tab(
+    cases: list[dict[str, Any]], clusters: list[dict[str, Any]], live_api_key: str
+) -> None:
     st.subheader("Приём и очередь")
     paste = st.text_area("Вставьте обращения — по одному на строку", height=100, placeholder="Только синтетические данные; не вставляйте реальные персональные сведения.")
     upload = st.file_uploader("Или загрузите .txt, .csv, .json", type=["txt", "csv", "json"])
@@ -232,7 +234,8 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
                 st.warning("Добавьте хотя бы одно обращение.")
             else:
                 with st.spinner("Классификация и маршрутизация…"):
-                    loaded_cases, loaded_clusters, warnings = process_records(_live_records(texts))
+                    with runtime_api_key(live_api_key):
+                        loaded_cases, loaded_clusters, warnings = process_records(_live_records(texts))
                 st.session_state.cases, st.session_state.clusters = loaded_cases, loaded_clusters
                 st.session_state.warnings = warnings
                 st.rerun()
@@ -474,7 +477,14 @@ with st.sidebar:
     provider_label = selected_backend["provider"].capitalize()
     mode = st.radio("Источник обработки", ["Демо · офлайн", f"Живой ввод · {provider_label}"], index=0)
     st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
-    st.caption("Основной провайдер: Gemini. Ввод API-ключа в интерфейсе — Скоро.")
+    st.caption("Основной провайдер: Gemini.")
+    live_api_key = st.text_input(
+        "Gemini API-ключ",
+        type="password",
+        placeholder="Вставьте ключ Google AI Studio",
+        help="Ключ хранится только в памяти текущей сессии и не записывается на диск.",
+    )
+    st.caption("Ключ используется только для живого вызова и не сохраняется.")
     frozen_backend = _frozen_demo_metadata()
     if frozen_backend:
         st.caption(
@@ -483,9 +493,9 @@ with st.sidebar:
     else:
         st.caption("Замороженные результаты ещё не созданы.")
     if forced_offline:
-        st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод проверяет ключ окружения.")
+        st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод использует поле выше или ключ окружения.")
     elif mode.startswith("Живой") and selected_key_env:
-        st.caption(f"Используется {selected_key_env} из окружения; без него — резервные правила.")
+        st.caption(f"При пустом поле используется {selected_key_env} из окружения; без ключа — резервные правила.")
     st.divider()
     st.caption("КАТО 111010000 · Кокшетау · внутренний операторский контур")
 
@@ -494,7 +504,7 @@ st.session_state.setdefault("clusters", [])
 st.session_state.setdefault("warnings", [])
 tabs = st.tabs(["Очередь", "Карта", "Сроки", "Сводка"])
 with tabs[0]:
-    queue_tab(st.session_state.cases, st.session_state.clusters)
+    queue_tab(st.session_state.cases, st.session_state.clusters, live_api_key)
 with tabs[1]:
     map_tab(st.session_state.cases, st.session_state.clusters)
 with tabs[2]:

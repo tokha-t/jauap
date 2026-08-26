@@ -69,6 +69,17 @@ class LlmBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(llm.provider_key_env(), "GOOGLE_API_KEY")
 
+    def test_runtime_api_key_exists_only_inside_live_request(self) -> None:
+        with llm.runtime_api_key("  ui-gemini-key  "):
+            self.assertEqual(os.environ["GOOGLE_API_KEY"], "ui-gemini-key")
+        self.assertNotIn("GOOGLE_API_KEY", os.environ)
+
+    def test_runtime_api_key_restores_existing_environment_value(self) -> None:
+        os.environ["GOOGLE_API_KEY"] = "environment-key"
+        with llm.runtime_api_key("ui-gemini-key"):
+            self.assertEqual(os.environ["GOOGLE_API_KEY"], "ui-gemini-key")
+        self.assertEqual(os.environ["GOOGLE_API_KEY"], "environment-key")
+
     def test_unknown_provider_fails_before_any_call(self) -> None:
         os.environ["JAUAP_PROVIDER"] = "unknown"
         with self.assertRaisesRegex(ValueError, "Unsupported JAUAP_PROVIDER"):

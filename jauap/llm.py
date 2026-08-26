@@ -5,8 +5,9 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -51,6 +52,26 @@ def provider_key_env(provider: str | None = None) -> str:
     if selected not in PROVIDERS:
         raise ValueError(f"Unsupported provider: {selected!r}")
     return str(PROVIDERS[selected]["key_env"])
+
+
+@contextmanager
+def runtime_api_key(api_key: str | None) -> Iterator[None]:
+    """Expose a UI-supplied key only for the duration of one live request."""
+    value = (api_key or "").strip()
+    if not value:
+        yield
+        return
+
+    key_env = provider_key_env()
+    previous = os.environ.get(key_env)
+    os.environ[key_env] = value
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop(key_env, None)
+        else:
+            os.environ[key_env] = previous
 
 
 def _cache_path(system: str, user: str, provider: str, model: str) -> Path:
