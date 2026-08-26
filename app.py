@@ -183,7 +183,12 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
     paste = st.text_area("Вставьте обращения — по одному на строку", height=100, placeholder="Только синтетические данные; не вставляйте реальные персональные сведения.")
     upload = st.file_uploader("Или загрузите .txt, .csv, .json", type=["txt", "csv", "json"])
     load_col, process_col, _ = st.columns([1.45, 1.3, 3])
-    if load_col.button("Загрузить демо-набор (250 обращений)", type="primary", width="stretch"):
+    demo_ready = DEMO_RESULTS.exists()
+    if load_col.button(
+        "Загрузить демо-набор (250 обращений)",
+        type="primary", width="stretch", disabled=not demo_ready,
+        help=None if demo_ready else "Замороженные модельные результаты — Скоро.",
+    ):
         try:
             with st.spinner("Загрузка безопасного офлайн-набора…"):
                 loaded_cases, loaded_clusters, warnings = _load_frozen_demo()
@@ -192,6 +197,8 @@ def queue_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> No
             st.rerun()
         except Exception:
             st.warning("Не удалось загрузить демо-набор. Проверьте целостность JSON-файлов.")
+    if not demo_ready:
+        st.caption("Замороженные модельные результаты — Скоро. Живой ввод уже работает в резервном режиме.")
     if process_col.button("Обработать введённые обращения", width="stretch"):
         try:
             texts = [line.strip() for line in paste.splitlines() if line.strip()] + _parse_upload(upload)
@@ -434,10 +441,11 @@ with st.sidebar:
     forced_offline = os.environ.get("JAUAP_OFFLINE") == "1"
     mode = st.radio("Источник обработки", ["Демо · офлайн", "Живой ввод · Anthropic"], index=0)
     st.session_state["offline_mode"] = forced_offline or mode.startswith("Демо")
+    st.caption("Ввод API-ключа в интерфейсе — Скоро.")
     if forced_offline:
         st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод проверяет ключ окружения.")
     elif mode.startswith("Живой"):
-        st.caption("Ввод API-ключа в интерфейсе — Скоро. Пока используется ANTHROPIC_API_KEY из окружения; без него — резервные правила.")
+        st.caption("Пока используется ANTHROPIC_API_KEY из окружения; без него — резервные правила.")
     st.divider()
     st.caption("КАТО 111010000 · Кокшетау · внутренний операторский контур")
 
