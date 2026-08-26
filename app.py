@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
 DEMO_RESULTS = DATA_DIR / "demo_results.json"
 DEMO_SCORE = DATA_DIR / "demo_score.json"
+DEMO_CORPUS = DATA_DIR / "demo_corpus.json"
 ROUTING = json.loads((DATA_DIR / "routing.json").read_text(encoding="utf-8"))
 
 RISK_LABELS = {"green": "🟢 Низкий", "amber": "🟠 Средний", "red": "🔴 Высокий"}
@@ -86,6 +87,7 @@ def _read_frozen_demo() -> dict[str, Any]:
     if not DEMO_RESULTS.exists():
         raise FileNotFoundError("Run scripts/freeze_demo.py before loading the offline demo")
     payload = json.loads(DEMO_RESULTS.read_text(encoding="utf-8"))
+    corpus_sha256 = hashlib.sha256(DEMO_CORPUS.read_bytes()).hexdigest()
     provider = payload.get("provider")
     source = payload.get("classification_source")
     cases = payload.get("cases")
@@ -95,6 +97,7 @@ def _read_frozen_demo() -> dict[str, Any]:
         or source != f"{provider} API via classify_text"
         or not isinstance(payload.get("model"), str)
         or payload.get("classification_contract_sha256") != CLASSIFICATION_CONTRACT_SHA256
+        or payload.get("corpus_sha256") != corpus_sha256
         or payload.get("case_count") != 250
         or not isinstance(cases, list)
         or len(cases) != 250
@@ -230,7 +233,7 @@ def queue_tab(
     if load_col.button(
         "Загрузить демо-набор (250 обращений)",
         type="primary", width="stretch", disabled=not demo_ready,
-        help=None if demo_ready else "Замороженные модельные результаты — Скоро.",
+        help=None if demo_ready else "Замороженные результаты отсутствуют или не соответствуют текущему корпусу.",
     ):
         try:
             with st.spinner("Загрузка безопасного офлайн-набора…"):
@@ -241,7 +244,7 @@ def queue_tab(
         except Exception:
             st.warning("Не удалось загрузить демо-набор. Проверьте целостность JSON-файлов.")
     if not demo_ready:
-        st.caption("Замороженные модельные результаты — Скоро. Живой ввод уже работает в резервном режиме.")
+        st.caption("Текущий корпус ещё не заморожен через Gemini. Живой ввод работает независимо.")
     if process_col.button("Обработать введённые обращения", width="stretch"):
         try:
             texts = [line.strip() for line in paste.splitlines() if line.strip()] + _parse_upload(upload)
@@ -523,7 +526,7 @@ with st.sidebar:
             f"Замороженные результаты: {frozen_backend['provider'].capitalize()} · {frozen_backend['model']}"
         )
     else:
-        st.caption("Замороженные результаты ещё не созданы.")
+        st.caption("Замороженные результаты отсутствуют или требуют повторной генерации через Gemini.")
     if forced_offline:
         st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод использует поле выше или ключ окружения.")
     elif mode.startswith("Живой") and selected_key_env:

@@ -7,6 +7,7 @@ Every Kazakh and mixed-language record requires Tokha's review before a demo.
 from __future__ import annotations
 
 import json
+import hashlib
 import random
 from collections import Counter
 from datetime import date, datetime, time, timedelta
@@ -481,9 +482,18 @@ def main() -> None:
         record["id"]: record.pop("_ground_truth")
         for record in records
     }
-    DATA_PATH.write_text(json.dumps(records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    corpus_text = json.dumps(records, ensure_ascii=False, indent=2) + "\n"
+    DATA_PATH.write_text(corpus_text, encoding="utf-8")
     GROUND_TRUTH_PATH.write_text(
-        json.dumps({"ground_truth": ground_truth}, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(
+            {
+                "corpus_sha256": hashlib.sha256(corpus_text.encode("utf-8")).hexdigest(),
+                "ground_truth": ground_truth,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     print(f"Wrote {len(records)} synthetic appeals to {DATA_PATH}")

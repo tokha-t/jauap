@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS_PATH = ROOT / "data" / "demo_results.json"
 GROUND_TRUTH_PATH = ROOT / "data" / "demo_ground_truth.json"
 SCORE_PATH = ROOT / "data" / "demo_score.json"
+CORPUS_PATH = ROOT / "data" / "demo_corpus.json"
 FIELDS = ("appeal_type", "topic", "settlement")
 
 
@@ -43,7 +44,17 @@ def main() -> None:
 
     result_bytes = RESULTS_PATH.read_bytes()
     results = json.loads(result_bytes)
-    ground_truth = json.loads(GROUND_TRUTH_PATH.read_text(encoding="utf-8"))["ground_truth"]
+    ground_truth_payload = json.loads(GROUND_TRUTH_PATH.read_text(encoding="utf-8"))
+    corpus_sha256 = hashlib.sha256(CORPUS_PATH.read_bytes()).hexdigest()
+    if results.get("corpus_sha256") != corpus_sha256:
+        raise SystemExit(
+            "Frozen results belong to a different corpus; run scripts/freeze_demo.py first."
+        )
+    if ground_truth_payload.get("corpus_sha256") != corpus_sha256:
+        raise SystemExit(
+            "Ground truth belongs to a different corpus; run python -m jauap.corpus first."
+        )
+    ground_truth = ground_truth_payload["ground_truth"]
     cases = results["cases"]
     by_id = {case["id"]: case for case in cases}
     if set(by_id) != set(ground_truth):

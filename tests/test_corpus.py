@@ -1,10 +1,21 @@
 from __future__ import annotations
 
 import unittest
+import hashlib
+import json
 from collections import Counter, defaultdict
 
 from jauap.classify import _language
-from jauap.corpus import LANGUAGE_QUOTAS, TOPIC_QUOTAS, TYPE_QUOTAS, TYPE_TEMPLATES, generate, validate
+from jauap.corpus import (
+    DATA_PATH,
+    GROUND_TRUTH_PATH,
+    LANGUAGE_QUOTAS,
+    TOPIC_QUOTAS,
+    TYPE_QUOTAS,
+    TYPE_TEMPLATES,
+    generate,
+    validate,
+)
 
 
 class CorpusCredibilityTests(unittest.TestCase):
@@ -47,6 +58,13 @@ class CorpusCredibilityTests(unittest.TestCase):
     def test_every_language_label_is_derived_from_its_text(self) -> None:
         for record in self.records:
             self.assertEqual(_language(record["raw_text"]), record["language_detected"], record["id"])
+
+    def test_committed_ground_truth_is_bound_to_public_corpus(self) -> None:
+        payload = json.loads(GROUND_TRUTH_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(
+            payload["corpus_sha256"],
+            hashlib.sha256(DATA_PATH.read_bytes()).hexdigest(),
+        )
 
 
 if __name__ == "__main__":
