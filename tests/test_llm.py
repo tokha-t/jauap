@@ -16,7 +16,7 @@ SCHEMA = {"type": "object", "required": ["answer"]}
 
 
 class FakeOpenAI:
-    responses: list[str] = []
+    responses: list[str | None] = []
     calls: list[dict] = []
 
     def __init__(self, *, api_key: str, base_url: str) -> None:
@@ -27,8 +27,17 @@ class FakeOpenAI:
     def create(self, **kwargs):
         self.calls.append({"base_url": self.base_url, **kwargs})
         text = self.responses.pop(0)
+        if text is None:
+            return SimpleNamespace(
+                choices=[SimpleNamespace(message=None, finish_reason="content_filter")]
+            )
         return SimpleNamespace(
-            choices=[SimpleNamespace(message=SimpleNamespace(content=text))]
+            choices=[
+                SimpleNamespace(
+                    message=SimpleNamespace(content=text),
+                    finish_reason="stop",
+                )
+            ]
         )
 
 
@@ -98,6 +107,19 @@ class LlmBoundaryTests(unittest.TestCase):
         self.assertEqual(len(FakeOpenAI.calls), 2)
         retry_system = FakeOpenAI.calls[1]["messages"][0]["content"]
         self.assertIn("previous response could not be parsed", retry_system)
+
+    def test_filtered_empty_completion_retries_as_synthetic_triage(self) -> None:
+        os.environ["GOOGLE_API_KEY"] = "google-test-value"
+        FakeOpenAI.responses = [None, '{"answer": "classified"}']
+
+        result = llm.complete("system", "UPPERCASE USER", SCHEMA)
+
+        self.assertEqual(result, {"answer": "classified"})
+        self.assertEqual(len(FakeOpenAI.calls), 2)
+        retry_system = FakeOpenAI.calls[1]["messages"][0]["content"]
+        self.assertIn("synthetic administrative evidence", retry_system)
+        retry_user = FakeOpenAI.calls[1]["messages"][1]["content"]
+        self.assertEqual(retry_user, "uppercase user")
 
     def test_cached_result_avoids_a_second_provider_call(self) -> None:
         os.environ["GOOGLE_API_KEY"] = "google-test-value"
