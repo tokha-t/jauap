@@ -12,6 +12,7 @@ from collections import Counter
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
+from .classify import _language
 from .deadline_engine import is_working_day
 
 
@@ -189,6 +190,12 @@ ADVERSARIAL_TOPICS = [
     "education",
 ]
 ADVERSARIAL_LANGUAGES = ["ru", "kk", "mixed", "latin", "ru", "kk", "mixed", "latin", "ru", "kk"]
+LANGUAGE_SUFFIXES = {
+    "ru": ["!!!", " ну сколько можно", " срочно пожалуйста"],
+    "kk": ["!!!", " жауап беріңіздер", " тезірек көмектесіңіздер"],
+    "mixed": ["!!! уже невозможно", " жауап беріңіздер пожалуйста", " срочно көмектесіңіздер"],
+    "latin": ["!!!", " jauap berinizder", " qashan sheshiledi"],
+}
 
 
 def _working_dates(count: int = 25) -> list[date]:
@@ -242,21 +249,19 @@ def _record(
 
 def _hard_cases() -> list[dict]:
     pipe_phrasings = [
-        "ул. Абая 14 — во дворе прорвало трубу, вода льётся уже третий день",
-        "Абая көшесі 14-үй алдында труба жарылып су ағып жатыр",
-        "Абая, д.14 опять порыв трубы во дворе, никто не приезжает",
-        "абая 14 су құбыры сломан, весь двор в воде",
-        "во дворе 14 дома по абая течет вода из сломанной трубы",
+        ("ул. Абая 14 — во дворе прорвало трубу, вода льётся уже третий день", "ru"),
+        ("Абая көшесі 14-үй алдында труба жарылып, су ағып жатыр", "mixed"),
+        ("Абая, д.14 опять порыв трубы во дворе, никто не приезжает", "ru"),
+        ("абая 14 су құбыры сломан, весь двор в воде", "mixed"),
+        ("во дворе 14 дома по абая течет вода из сломанной трубы", "ru"),
     ]
     records = []
-    languages = ["ru", "mixed", "ru", "mixed", "ru", "kk", "mixed", "ru", "kk", "mixed",
-                 "ru", "kk", "mixed", "ru", "kk", "mixed", "ru", "kk", "mixed", "ru"]
     for index in range(20):
-        text = pipe_phrasings[index % len(pipe_phrasings)]
+        text, language = pipe_phrasings[index % len(pipe_phrasings)]
         if index:
-            text += ["!!!", " пожалуйста помогите", " уже невозможно", " балалар жүре алмайды"][index % 4]
+            text += LANGUAGE_SUFFIXES[language][index % len(LANGUAGE_SUFFIXES[language])]
         record = _record(
-            index + 1, text, languages[index], "water_supply",
+            index + 1, text, language, "water_supply",
             hard_case="broken_pipe_cluster_20" if index else "code_switched_naive_misroute+broken_pipe_cluster_20",
         )
         cluster_day = AS_OF - timedelta(days=index % 9)
@@ -397,7 +402,7 @@ def generate() -> list[dict]:
         if hard_case is None and number % 11 == 0:
             text = text.upper()
         elif hard_case is None and number % 7 == 0:
-            text += rng.choice(["!!!", " ну сколько можно", " жауап беріңіздер", " срочно пожалуйста"])
+            text += rng.choice(LANGUAGE_SUFFIXES[language])
         records.append(
             _record(
                 number,
@@ -417,6 +422,14 @@ def validate(records: list[dict]) -> None:
     assert len(records) == 250
     assert len({record["id"] for record in records}) == 250
     assert Counter(record["language_detected"] for record in records) == LANGUAGE_QUOTAS
+    for record in records:
+        detected = _language(record["raw_text"])
+        assert detected == record["language_detected"], (
+            record["id"],
+            record["language_detected"],
+            detected,
+            record["raw_text"],
+        )
     appeal_types = Counter(record["_ground_truth"]["appeal_type"] for record in records)
     assert appeal_types == TYPE_QUOTAS
     for language in LANGUAGE_QUOTAS:
@@ -460,6 +473,10 @@ def validate(records: list[dict]) -> None:
 def main() -> None:
     records = generate()
     validate(records)
+    appeal_type_distribution = Counter(
+        record["_ground_truth"]["appeal_type"]
+        for record in records
+    )
     ground_truth = {
         record["id"]: record.pop("_ground_truth")
         for record in records
@@ -472,7 +489,7 @@ def main() -> None:
     print(f"Wrote {len(records)} synthetic appeals to {DATA_PATH}")
     print(f"Wrote scoring truth to {GROUND_TRUTH_PATH}")
     print("Language distribution:", dict(Counter(record["language_detected"] for record in records)))
-    print("Appeal type distribution:", dict(Counter(record["_ground_truth"]["appeal_type"] for record in records)))
+    print("Appeal type distribution:", dict(appeal_type_distribution))
     print("MANDATORY: Tokha must review every kk, mixed, and latin appeal before the demo.")
 
 

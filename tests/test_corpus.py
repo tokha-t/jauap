@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 from collections import Counter, defaultdict
 
+from jauap.classify import _language
 from jauap.corpus import LANGUAGE_QUOTAS, TOPIC_QUOTAS, TYPE_QUOTAS, TYPE_TEMPLATES, generate, validate
 
 
@@ -42,6 +43,10 @@ class CorpusCredibilityTests(unittest.TestCase):
 
     def test_full_validation_passes(self) -> None:
         validate(self.records)
+
+    def test_every_language_label_is_derived_from_its_text(self) -> None:
+        for record in self.records:
+            self.assertEqual(_language(record["raw_text"]), record["language_detected"], record["id"])
 
 
 if __name__ == "__main__":

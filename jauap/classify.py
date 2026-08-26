@@ -101,13 +101,23 @@ TOPIC_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
 def _language(text: str) -> str:
     lowered = text.casefold()
     kazakh_letters = len(re.findall(r"[әғқңөұүһі]", lowered))
-    russian_markers = len(re.findall(r"\b(нет|уже|прошу|когда|дом|двор|опять|пожалуйста|требую)\b", lowered))
+    kazakh_morphemes = len(re.findall(
+        r"\b(балалар|ауылында|және|жатыр|жоқ|бері|алдында|жанында|көмектесіңіздер|сұраймын|"
+        r"хабарлаймын|ұсынамын|қолдаймын|шағымданамын)\b",
+        lowered,
+    ))
+    russian_markers = len(re.findall(
+        r"\b(нет|уже|прошу|когда|дом|двор|опять|пожалуйста|требую|дорога|мусор|труба|"
+        r"сломан|весь|ответа|раньше|поддерживаю|предлагаю)\b",
+        lowered,
+    ))
     latin_markers = len(re.findall(r"\b(joq|qashan|uide|jatyr|tuspedi|janbaidy)\b", lowered))
     if latin_markers:
         return "latin"
-    if kazakh_letters and russian_markers:
+    kazakh_markers = kazakh_letters + kazakh_morphemes
+    if kazakh_markers and russian_markers:
         return "mixed"
-    return "kk" if kazakh_letters else "ru"
+    return "kk" if kazakh_markers else "ru"
 
 
 def _topic(text: str) -> str:
