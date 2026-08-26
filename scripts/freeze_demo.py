@@ -170,4 +170,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        raise SystemExit("Freeze interrupted; the last completed checkpoint is intact.") from None
