@@ -37,6 +37,11 @@ def _print_confusion(field: str, pairs: list[tuple[str, str]]) -> None:
 
 
 def main() -> None:
+    if not RESULTS_PATH.exists():
+        raise SystemExit("data/demo_results.json is missing; run scripts/freeze_demo.py first.")
+    if not GROUND_TRUTH_PATH.exists():
+        raise SystemExit("data/demo_ground_truth.json is missing; cannot score the demo.")
+
     result_bytes = RESULTS_PATH.read_bytes()
     results = json.loads(result_bytes)
     ground_truth = json.loads(GROUND_TRUTH_PATH.read_text(encoding="utf-8"))["ground_truth"]
