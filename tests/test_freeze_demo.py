@@ -102,6 +102,8 @@ class FreezeDemoTests(unittest.TestCase):
         final = json.loads(self.results_path.read_text(encoding="utf-8"))
         self.assertEqual(final["provider"], "gemini")
         self.assertEqual(final["model"], "test-model")
+        self.assertEqual(final["as_of_date"], "2026-08-26")
+        self.assertTrue(all(item["as_of_date"] == "2026-08-26" for item in snapshots))
         self.assertEqual(
             final["classification_contract_sha256"],
             freeze_demo.CLASSIFICATION_CONTRACT_SHA256,

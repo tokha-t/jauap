@@ -9,7 +9,7 @@ import json
 import os
 import sys
 import time
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +23,7 @@ from jauap.classify import (  # noqa: E402
     classify_text,
 )
 from jauap.llm import is_cached, provider_key_env, provider_metadata  # noqa: E402
+from jauap.corpus import AS_OF  # noqa: E402
 from jauap.pipeline import process_records  # noqa: E402
 
 
@@ -95,6 +96,7 @@ def _checkpoint_payload(
         "classification_source": f"{metadata['provider']} API via classify_text",
         "classification_contract_sha256": CLASSIFICATION_CONTRACT_SHA256,
         "corpus_sha256": corpus_sha256,
+        "as_of_date": AS_OF.isoformat(),
         "processed_cases": len(classifications),
         "total_cases": total,
         "classifications": classifications,
@@ -215,7 +217,7 @@ def main() -> None:
     payload = {
         "status": "complete",
         "generated_at": _timestamp(),
-        "as_of_date": date.today().isoformat(),
+        "as_of_date": AS_OF.isoformat(),
         "provider": metadata["provider"],
         "model": metadata["model"],
         "classification_source": f"{metadata['provider']} API via classify_text",
