@@ -153,6 +153,18 @@ def resolve_location(text: str, *, use_llm: bool = True) -> Location | None:
     """Resolve to a deterministic placeholder coordinate without network access."""
     extracted = extract_address(text, use_llm=use_llm)
     settlement = extracted.get("settlement") or _settlement(text)
+    if settlement == "Кызыл-Жулдыз":
+        centroid = SETTLEMENTS[settlement]
+        return Location(
+            raw_mention=extracted.get("raw_mention") or settlement,
+            street=None,
+            building=None,
+            district=extracted.get("district"),
+            settlement=settlement,
+            lat=float(centroid["lat"]),
+            lon=float(centroid["lon"]),
+            confidence=0.9,
+        )
     street, score = _match_street(text, settlement, extracted.get("street"))
     if street is None:
         return None

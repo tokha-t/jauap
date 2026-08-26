@@ -150,6 +150,20 @@ def _deadline_color(value: int) -> str:
     return "background-color:#eaf7ef;color:#126b3a"
 
 
+def _ru_count(value: int, one: str, few: str, many: str) -> str:
+    remainder_100 = abs(value) % 100
+    remainder_10 = remainder_100 % 10
+    if 11 <= remainder_100 <= 14:
+        form = many
+    elif remainder_10 == 1:
+        form = one
+    elif 2 <= remainder_10 <= 4:
+        form = few
+    else:
+        form = many
+    return f"{value} {form}"
+
+
 def _highlighted_text(case: dict[str, Any]) -> str:
     escaped = html.escape(case["raw_text"])
     mention = (case.get("location") or {}).get("raw_mention")
@@ -197,7 +211,7 @@ def _case_detail(case: dict[str, Any], clusters: list[dict[str, Any]]) -> None:
         cluster["notification_messages"] = generate_cluster_notifications(cluster, st.session_state.cases)
     if cluster.get("resolved"):
         messages = cluster.get("notification_messages") or generate_cluster_notifications(cluster, st.session_state.cases)
-        st.write(f"**Уведомления заявителям: {len(messages)}**")
+        st.write(f"**Уведомления заявителям: {_ru_count(len(messages), 'сообщение', 'сообщения', 'сообщений')}**")
         copy_text = "\n\n".join(item["message"] for item in messages)
         st.code(copy_text, language=None)
         st.caption("Используйте значок копирования в блоке выше — сообщения не отправляются системой.")
@@ -352,21 +366,23 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
             oldest_days = max(1, (demo_now() - datetime.fromisoformat(cluster["oldest_received_at"]).date()).days + 1)
             remaining = working_days_between(demo_now(), date.fromisoformat(cluster["earliest_deadline"]))
             popup = (
-                f"{cluster['member_count']} обращений · старейшее {oldest_days} дней · "
+                f"{_ru_count(cluster['member_count'], 'обращение', 'обращения', 'обращений')} · "
+                f"старейшее {_ru_count(oldest_days, 'день', 'дня', 'дней')} · "
                 f"срок истекает через {remaining} рабочих дней · {html.escape(representative['statutory_clock_holder'])}"
             )
             folium.CircleMarker(
                 [location["lat"], location["lon"]],
                 radius=max(6, min(28, 5 + math.sqrt(cluster["member_count"]) * 4)),
                 color=RISK_COLORS[highest_risk["risk_band"]], fill=True, fill_opacity=.78,
-                weight=2, popup=folium.Popup(popup, max_width=460), tooltip=f"{cluster['cluster_id']} · {cluster['member_count']} обращений",
+                weight=2, popup=folium.Popup(popup, max_width=460),
+                tooltip=f"{cluster['cluster_id']} · {_ru_count(cluster['member_count'], 'обращение', 'обращения', 'обращений')}",
             ).add_to(layer_for.get(location["settlement"], city_layer))
             rendered += 1
     city_layer.add_to(fmap)
     rural_layer.add_to(fmap)
     station_layer.add_to(fmap)
     folium.LayerControl(collapsed=False).add_to(fmap)
-    st.caption(f"На карте: {rendered} отметок. Переключение схлопывает повторные обращения по одному объекту.")
+    st.caption(f"На карте: {_ru_count(rendered, 'отметка', 'отметки', 'отметок')}. Переключение схлопывает повторные обращения по одному объекту.")
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", message="(?s).*folium_static is deprecated.*", category=DeprecationWarning)
         folium_static(fmap, width=900, height=600)
@@ -381,10 +397,13 @@ def deadlines_tab(cases: list[dict[str, Any]]) -> None:
     ordered = sorted(cases, key=lambda case: (not case["deemed_refusal"], case["working_days_remaining"]))
     overdue = sum(case["deemed_refusal"] for case in ordered)
     if overdue:
-        st.error(f"Считается отказом — АППК ст. 91(2): {overdue} дел")
+        st.error(f"Считается отказом — АППК ст. 91(2): {_ru_count(overdue, 'дело', 'дела', 'дел')}")
     for holder in sorted({case["statutory_clock_holder"] for case in ordered}):
         department_cases = [case for case in ordered if case["statutory_clock_holder"] == holder]
-        with st.expander(f"{holder} · {len(department_cases)} дел", expanded=holder == "Отдел ЖКХ, ПТ и АД"):
+        with st.expander(
+            f"{holder} · {_ru_count(len(department_cases), 'дело', 'дела', 'дел')}",
+            expanded=holder == "Отдел ЖКХ, ПТ и АД",
+        ):
             board = pd.DataFrame([{
                 "ID": case["id"], "Тип": case["appeal_type"], "Срок": case["deadline"],
                 "Осталось": case["working_days_remaining"], "Основание": case["deadline_basis"],
