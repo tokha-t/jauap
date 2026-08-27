@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "social",
+    "routing_targets": [
+      "Отдел занятости и социальных программ"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин обращается за помощью в реализации права на получение социальной выплаты впервые, что соответствует типу обращения «заявление» и тематике социальной сферы."
+  }
+}

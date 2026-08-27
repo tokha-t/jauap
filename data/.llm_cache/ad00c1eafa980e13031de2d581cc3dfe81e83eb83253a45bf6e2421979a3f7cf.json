@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "construction",
+    "routing_targets": [
+      "Отдел строительства города Кокшетау"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Основной целью обращения является получение информации о сроках капитального ремонта по указанному адресу («капремонт қашан болады, дайте ответ»), что подпадает под категорию запроса."
+  }
+}

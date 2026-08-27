@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит оказать содействие в устранении опасного сухого дерева над детской площадкой, что подпадает под категорию заявления как первый запрос на получение услуги благоустройства."
+  }
+}

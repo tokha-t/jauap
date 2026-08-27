@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит устранить дорожную яму возле дома по улице Шевченко 73 для реализации права на безопасное передвижение, что квалифицируется как первичное заявление об оказании содействия (заявление)."
+  }
+}

@@ -27,7 +27,7 @@ from jauap.deadline_engine import (
     working_days_between,
 )
 from jauap.draft import DRAFT_BANNER, generate_cluster_notifications
-from jauap.llm import PRIMARY_PROVIDER, provider_key_env, provider_metadata, runtime_api_key
+from jauap.llm import PRIMARY_PROVIDER, provider_metadata, runtime_api_key
 from jauap.pipeline import process_records
 
 
@@ -200,6 +200,7 @@ def _case_detail(case: dict[str, Any], clusters: list[dict[str, Any]]) -> None:
         st.error("Считается отказом — АППК ст. 91(2)")
     if case["needs_human_review"]:
         st.warning("Требуется проверка оператором")
+        st.markdown("\n".join(f"- {reason}" for reason in case["review_reasons"]))
     st.write("**Факторы риска**")
     if case["risk_factors"]:
         st.markdown("\n".join(f"- {factor}" for factor in case["risk_factors"]))
@@ -462,19 +463,23 @@ def summary_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> 
     cols[2].metric("В срок", f"{in_time:.0%}")
     cols[3].metric("Высокий риск", high_risk, help=ENFORCEMENT_HELP)
     cols[4].metric("Уточнить компетенцию", unverified)
+    calibration: dict[str, Any] = {}
     try:
         score = json.loads(DEMO_SCORE.read_text(encoding="utf-8"))
         result_digest = hashlib.sha256(DEMO_RESULTS.read_bytes()).hexdigest()
+        score_matches_results = score.get("results_sha256") == result_digest
         accuracy = (
             score.get("accuracy", {}).get("appeal_type")
-            if score.get("results_sha256") == result_digest
+            if score_matches_results
             else None
         )
         baseline = (
             score.get("majority_class_baseline", {}).get("accuracy")
-            if score.get("results_sha256") == result_digest
+            if score_matches_results
             else None
         )
+        if score_matches_results:
+            calibration = score.get("review_calibration", {})
     except (OSError, ValueError, TypeError):
         accuracy = None
         baseline = None
@@ -483,6 +488,17 @@ def summary_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> 
         model_col.metric("Точность Gemini по типу обращения", f"{accuracy:.1%}")
         baseline_col.metric("Базовая точность · всегда «сообщение»", f"{baseline:.1%}")
         st.caption(f"Измеренный разрыв: {(accuracy - baseline):+.1%} п.п. — вклад модели сверх константного ответа.")
+    flagged_share = calibration.get("flagged_share")
+    flagged_accuracy = calibration.get("flagged_accuracy")
+    unflagged_accuracy = calibration.get("unflagged_accuracy")
+    if all(isinstance(value, (int, float)) for value in (
+        flagged_share, flagged_accuracy, unflagged_accuracy
+    )):
+        st.info(
+            f"Система сама отмечает {flagged_share:.1%} обращений как требующие проверки; "
+            f"на этих обращениях точность типа — {flagged_accuracy:.1%}, "
+            f"на остальных — {unflagged_accuracy:.1%}."
+        )
     st.subheader("Язык обращений")
     names = {"ru": "Русский", "kk": "Қазақша", "mixed": "Смешанные", "latin": "Латиница"}
     counts = pd.Series([case["language_detected"] for case in cases]).value_counts()
@@ -502,10 +518,8 @@ with st.sidebar:
     forced_offline = os.environ.get("JAUAP_OFFLINE") == "1"
     try:
         selected_backend = provider_metadata()
-        selected_key_env = provider_key_env(selected_backend["provider"])
     except ValueError:
         selected_backend = {"provider": "ошибка конфигурации", "model": "—"}
-        selected_key_env = None
     provider_label = selected_backend["provider"].capitalize()
     mode = st.radio("Источник обработки", ["Демо · офлайн", f"Живой ввод · {provider_label}"], index=0)
     st.session_state["offline_mode"] = mode.startswith("Демо")
@@ -513,13 +527,15 @@ with st.sidebar:
         calculation_date = demo_now()
     st.caption(f"Расчётная дата: {calculation_date.strftime('%d.%m.%Y')}")
     st.caption("Основной провайдер: Gemini.")
-    live_api_key = st.text_input(
+    st.text_input(
         "Gemini API-ключ",
         type="password",
-        placeholder="Вставьте ключ Google AI Studio",
-        help="Ключ хранится только в памяти текущей сессии и не записывается на диск.",
+        placeholder="Coming soon",
+        disabled=True,
+        help="Ввод ключа через интерфейс будет добавлен позже.",
     )
-    st.caption("Ключ используется только для живого вызова и не сохраняется.")
+    live_api_key = ""
+    st.caption("Ввод API-ключа в интерфейсе — Coming soon. Пока используется только GOOGLE_API_KEY из окружения.")
     frozen_backend = _frozen_demo_metadata()
     if frozen_backend:
         st.caption(
@@ -528,9 +544,9 @@ with st.sidebar:
     else:
         st.caption("Замороженные результаты отсутствуют или требуют повторной генерации через Gemini.")
     if forced_offline:
-        st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод использует поле выше или ключ окружения.")
-    elif mode.startswith("Живой") and selected_key_env:
-        st.caption(f"При пустом поле используется {selected_key_env} из окружения; без ключа — резервные правила.")
+        st.caption("JAUAP_OFFLINE=1: демо-набор читает только замороженные результаты; живой ввод использует GOOGLE_API_KEY из окружения.")
+    elif mode.startswith("Живой"):
+        st.caption("Без GOOGLE_API_KEY живой ввод использует резервные правила.")
     st.divider()
     st.caption("КАТО 111010000 · Кокшетау · внутренний операторский контур")
 

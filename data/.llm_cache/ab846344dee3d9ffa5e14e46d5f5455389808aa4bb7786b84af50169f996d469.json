@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "sewerage",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин запрашивает информацию о сроках и графике ремонтных работ по кэриз жүйесі (канализации) по улице Маншук Маметовой, 24, что соответствует типу обращений «запрос» и теме «sewerage»."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "отклик",
+    "topic": "public_transport",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.85,
+    "reasoning": "Гражданин выражает свое отношение к городской политике и текущему состоянию общественного транспорта на остановке, что подпадает под определение отклика согласно АППК."
+  }
+}

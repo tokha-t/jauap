@@ -180,6 +180,37 @@ TYPE_TEMPLATES = {
     }.items()
 }
 
+QUERY_SUBJECTS = {
+    "ru": {
+        "water_supply": "водоснабжение", "heating": "отопление", "sewerage": "канализация",
+        "electricity": "электроснабжение", "waste_removal": "вывоз мусора", "snow_cleaning": "уборка снега",
+        "road_condition": "ремонт дороги", "street_lighting": "уличное освещение", "landscaping": "озеленение",
+        "public_transport": "маршрут автобуса", "construction": "капитальный ремонт", "land": "земельный участок",
+        "social": "социальная выплата", "education": "ремонт школы",
+    },
+    "kk": {
+        "water_supply": "су құбыры", "heating": "жылу жүйесі", "sewerage": "кәріз жүйесі",
+        "electricity": "электр қуаты", "waste_removal": "қоқыс шығару", "snow_cleaning": "қар тазалау",
+        "road_condition": "жолды жөндеу", "street_lighting": "көшені жарықтандыру", "landscaping": "ағаштарды күту",
+        "public_transport": "автобус бағыты", "construction": "күрделі жөндеу", "land": "жер телімі",
+        "social": "әлеуметтік төлем", "education": "мектепті жөндеу",
+    },
+    "latin": {
+        "water_supply": "su qubyry", "heating": "jylu juiesi", "sewerage": "kariz juiesi",
+        "electricity": "elektr quaty", "waste_removal": "qoqys shygaru", "snow_cleaning": "qar tazalau",
+        "road_condition": "jol jondeu", "street_lighting": "koshe jarygy", "landscaping": "agash kutimi",
+        "public_transport": "avtobus bagyty", "construction": "kapitaldy jondeu", "land": "jer telimi",
+        "social": "aleumettik tolem", "education": "mektep jondeu",
+    },
+}
+QUERY_SUBJECTS["mixed"] = dict(QUERY_SUBJECTS["kk"])
+QUERY_TEXT = {
+    "ru": "По теме «{subject}» для объекта {street} {building} нужна информация: какой срок и график работ утверждены?",
+    "kk": "{street} көшесі {building}-үйдегі «{subject}» тақырыбы бойынша бекітілген мерзім мен кесте туралы ақпарат беруді сұраймын.",
+    "mixed": "{street} {building} нысанындағы «{subject}» бойынша нужна информация: бекітілген мерзім мен график когда будут готовы?",
+    "latin": "{street} {building} nysanyndagy {subject} turaly aqparat kerek. Bekitilgen merzim men jumys kestesi qashan dayin bolady?",
+}
+
 ADVERSARIAL_TOPICS = [
     "water_supply",
     "heating",
@@ -231,6 +262,40 @@ TEXT_VARIANTS = {
         " Nysannyn qazirgi kuiin habarlap oturmyn, ozgeris joq.",
         " Bul jagdai bizdin aumaqta qaitalanyp tur, sheshim joq.",
         " Oqiga ornynda ali ozgeris joq.",
+    ],
+}
+APPLICATION_VARIANTS = {
+    "ru": [
+        " Результат нужен для реализации права жильцов.",
+        " Ожидаю административного решения по существу просьбы.",
+        " Прошу рассмотреть это как заявление о содействии.",
+        " Исполнение просьбы позволит нормально пользоваться жильём.",
+        " Нужна помощь органа для восстановления услуги.",
+        " Прошу принять решение и организовать исполнение.",
+    ],
+    "kk": [
+        " Нәтиже тұрғындардың құқығын іске асыру үшін қажет.",
+        " Өтініштің мәні бойынша әкімшілік шешім күтемін.",
+        " Мұны жәрдем көрсету туралы өтініш ретінде қарауды сұраймын.",
+        " Өтініш орындалса, тұрғын үйді қалыпты пайдалана аламыз.",
+        " Қызметті қалпына келтіру үшін органның көмегі қажет.",
+        " Шешім қабылдап, орындалуын ұйымдастыруды сұраймын.",
+    ],
+    "mixed": [
+        " Нәтиже нужно для іске асыру құқығымызды.",
+        " Өтініш мәні бойынша жду административное решение.",
+        " Мұны заявление о содействии ретінде қарауды сұраймын.",
+        " Просьба орындалса, тұрғын үйді қалыпты пайдалана аламыз.",
+        " Қызметті қалпына келтіру үшін нужна помощь органа.",
+        " Прошу принять решение және орындалуын ұйымдастыруды.",
+    ],
+    "latin": [
+        " Natije quqyqty iske asyru ushin qajet, azirge sheshim joq.",
+        " Otinish mani boiynsha akimshilik sheshim kerek, azirge joq.",
+        " Muny jardem turaly otinish retinde qaraudy suraimyn, sheshim joq.",
+        " Otinish oryndalsa, uidi qalypty paidalana alamyz, kedergi joq.",
+        " Qyzmetti qalpyna keltiru ushin organnyn komegi kerek, sheshim joq.",
+        " Sheshim qabyldap, oryndaluyin uiymdastyrudy suraimyn, azirge joq.",
     ],
 }
 CLUSTER_VARIANTS = {
@@ -496,11 +561,22 @@ def generate() -> list[dict]:
         else:
             street, building = rng.choice(CITY_ADDRESSES)
             hard_case = None
-        text = template_sets[language][topic].format(street=street, building=building)
-        text = TYPE_TEMPLATES[language][topic][appeal_type].format(base=text)
+        if appeal_type == "запрос":
+            text = QUERY_TEXT[language].format(
+                subject=QUERY_SUBJECTS[language][topic],
+                street=street,
+                building=building,
+            )
+        else:
+            text = template_sets[language][topic].format(street=street, building=building)
+            text = TYPE_TEMPLATES[language][topic][appeal_type].format(base=text)
         if hard_case is None and number % 11 == 0:
             text = text.upper()
-        variants = TEXT_VARIANTS[language]
+        variants = (
+            APPLICATION_VARIANTS[language]
+            if appeal_type == "заявление"
+            else TEXT_VARIANTS[language]
+        )
         start = number % len(variants)
         candidates = [
             text + variants[(start + offset) % len(variants)]

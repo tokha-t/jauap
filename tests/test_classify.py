@@ -19,6 +19,21 @@ def model_result(*, topic: str, routing_targets: list[str] | None = None) -> dic
 
 
 class DeterministicRoutingTests(unittest.TestCase):
+    def test_all_five_live_paste_probes_keep_their_expected_types(self) -> None:
+        probes = {
+            "Прошу восстановить подачу воды в мою квартиру по ул. Абая 14": "заявление",
+            "Отдел ЖКХ отказал мне без основания, требую отменить отказ": "жалоба",
+            "Когда планируется ремонт улицы Абая?": "запрос",
+            "Во дворе не вывозят мусор уже неделю": "сообщение",
+            "Предлагаю установить дополнительные урны во дворах": "предложение",
+        }
+        for text, expected in probes.items():
+            with self.subTest(text=text):
+                result = fallback_classification(text)
+                self.assertEqual(result["appeal_type"], expected)
+                self.assertEqual(result["confidence"], 0.3)
+                self.assertTrue(result["needs_human_review"])
+
     def test_fallback_topic_rules_cover_existing_kazakh_and_latin_templates(self) -> None:
         examples = {
             "Отдел месяц не отвечает на моё заявление о воде": "water_supply",

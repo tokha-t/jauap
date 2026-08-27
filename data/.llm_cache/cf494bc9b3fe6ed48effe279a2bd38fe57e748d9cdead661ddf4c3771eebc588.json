@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.88,
+    "reasoning": "The citizen is requesting assistance in exercising their right to a safe environment by asking to fix the non-working street lights near Akana Sere 19, which fits the definition of 'заявление' under APPC Article 4."
+  }
+}

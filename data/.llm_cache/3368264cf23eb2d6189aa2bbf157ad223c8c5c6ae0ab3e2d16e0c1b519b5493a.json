@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "жалоба",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "Упр. энергетики и ЖКХ"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин явно обжалует бездействие государственного органа по ранее поданному обращению и требует устранить нарушение права в отношении неработающего уличного освещения."
+  }
+}

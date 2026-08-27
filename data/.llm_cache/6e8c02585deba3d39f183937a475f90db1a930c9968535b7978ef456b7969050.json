@@ -1,0 +1,17 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "snow_cleaning",
+    "routing_targets": [
+      "ТОО «Кокше Тазалык»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.98,
+    "reasoning": "Гражданин сообщает о текущем недостатке (неубранный снег около дома), что согласно правилам классифицируется как сообщение о дефекте в работе.",
+    "oblast_escalation": "Упр. энергетики и ЖКХ"
+  }
+}

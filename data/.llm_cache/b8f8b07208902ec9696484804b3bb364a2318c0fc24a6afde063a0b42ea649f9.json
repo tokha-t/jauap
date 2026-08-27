@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "land",
+    "routing_targets": [
+      "Отдел земельных отношений, архитектуры и градостроительства"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит разъяснить границы земельного участка по адресу ул. Шокана Уалиханова 175, что подпадает под категорию запроса информации."
+  }
+}

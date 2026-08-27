@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит оказать содействие в реализации прав и устранить опасную ситуацию с сухим деревом во дворе (заявление), что относится к компетенции отдела ЖКХ по благоустройству и обрезке деревьев."
+  }
+}

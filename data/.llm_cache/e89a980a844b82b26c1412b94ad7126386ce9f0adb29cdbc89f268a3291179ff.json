@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "Упр. энергетики и ЖКХ"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Заявитель просит предоставить информацию о сроках и графике работ по уличному освещению по указанному адресу, что подпадает под категорию запроса информации."
+  }
+}

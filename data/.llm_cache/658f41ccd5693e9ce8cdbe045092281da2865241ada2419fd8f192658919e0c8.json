@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.98,
+    "reasoning": "Гражданин сообщает о текущем дефекте инфраструктуры (неработающие фонари уличное освещение), что подпадает под определение сообщения согласно правилам АППК и классифицируется по теме уличного освещения."
+  }
+}

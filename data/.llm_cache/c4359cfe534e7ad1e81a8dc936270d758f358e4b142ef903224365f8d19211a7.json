@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "запрос",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.98,
+    "reasoning": "Гражданин запрашивает информацию о сроках и графике уличного освещения по конкретному адресу, что соответствует типу обращения «запрос» и теме уличного освещения."
+  }
+}

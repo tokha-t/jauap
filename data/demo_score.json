@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-27T04:45:53+05:00",
+  "generated_at": "2026-08-27T15:57:23+05:00",
   "sample_size": 250,
-  "results_sha256": "a683b5ae4604f52d15aa802fd9d326e86f098948e3707d5dd7779fda4594786c",
+  "results_sha256": "23c9192f50ffdd2b11dff81bad40c46070221602c7c13b158d4cf816423550fd",
   "accuracy": {
-    "appeal_type": 0.876,
+    "appeal_type": 0.884,
     "topic": 0.964,
     "settlement": 1.0
   },
@@ -19,5 +19,13 @@
     "label": "сообщение",
     "accuracy": 0.6
   },
-  "appeal_type_accuracy_gap": 0.276
+  "appeal_type_accuracy_gap": 0.28400000000000003,
+  "review_calibration": {
+    "flagged_count": 34,
+    "flagged_share": 0.136,
+    "flagged_accuracy": 0.5294117647058824,
+    "unflagged_count": 216,
+    "unflagged_accuracy": 0.9398148148148148,
+    "accuracy_gap": 0.4104030501089324
+  }
 }

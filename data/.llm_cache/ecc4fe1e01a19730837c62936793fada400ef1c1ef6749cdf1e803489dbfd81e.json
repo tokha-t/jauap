@@ -1,0 +1,17 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "snow_cleaning",
+    "routing_targets": [
+      "ТОО «Кокше Тазалык»",
+      "Отдел ЖКХ, ПТ и АД",
+      "Упр. энергетики и ЖКХ"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "The citizen is reporting a factual defect regarding uncleaned snow on a specific street (notification of a service lapse under rule 5), which classifies the appeal as a сообщение rather than a жалоба despite formal legal phrasing."
+  }
+}

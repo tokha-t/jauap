@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "landscaping",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит оказать содействие в реализации своих прав и устранении опасного дерева во дворе дома по ул. Гоголя 67, что относится к благоустройству и обрезке деревьев (заявление)."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "public_transport",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о текущем нарушении графика общественного транспорта на остановке и просит зафиксировать факт сбоя в работе сервиса."
+  }
+}

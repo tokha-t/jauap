@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит оказать содействие в устранении ямы во дворе дома по ул. Каныша Сатпаева 54, что квалифицируется как заявление о помощи в реализации законного интереса (благоустройство и состояние дороги)."
+  }
+}

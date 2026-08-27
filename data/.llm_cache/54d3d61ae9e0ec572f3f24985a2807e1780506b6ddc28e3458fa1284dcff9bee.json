@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "заявление",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин просит устранить дорожную яму по ул. Маншук Маметовой 24, что квалифицируется как заявление (первая инстанция о помощи в реализации прав на комфортную среду и транспортную доступность) по теме состояния дорог."
+  }
+}

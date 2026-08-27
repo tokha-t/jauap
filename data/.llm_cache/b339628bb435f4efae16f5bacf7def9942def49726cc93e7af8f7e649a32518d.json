@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.98,
+    "reasoning": "Обращение является сообщением о факте неисправности наружного освещения по конкретному адресу согласно правилам квалификации дефектов городской инфраструктуры."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "water_supply",
+    "routing_targets": [
+      "ГКП на ПХВ «Көкшетау Су Арнасы»",
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "mixed",
+    "urgency": "elevated",
+    "confidence": 0.98,
+    "reasoning": "Гражданин сообщает о текущей аварии на водопроводе во дворе по адресу Абая 14, что квалифицируется как сообщение о дефекте коммунальной услуги в соответствии с правилами."
+  }
+}

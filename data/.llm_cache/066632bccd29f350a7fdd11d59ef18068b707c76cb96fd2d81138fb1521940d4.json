@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "sewerage",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "ГКП на ПХВ «Көкшетау Су Арнасы»"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.98,
+    "reasoning": "Гражданин сообщает о текущем дефекте коммунальной инфраструктуры (течь канализации) без оспаривания административного акта, что соответствует типу «сообщение» и теме «sewerage»."
+  }
+}

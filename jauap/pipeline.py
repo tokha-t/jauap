@@ -15,6 +15,7 @@ from .deadline_engine import DEADLINES, deadline_for, register_date, working_day
 from .draft import draft_response
 from .geo import resolve_location
 from .risk import apply_risk
+from .review import review_flags
 
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -91,11 +92,14 @@ def process_records(
             "misroute_cost_avoided": 0 if result["topic"] == "НЕ ОПРЕДЕЛЕНО" else 3,
             "draft_response": None,
             "confidence": result["confidence"],
-            "needs_human_review": bool(result["needs_human_review"] or location is None),
+            "needs_human_review": False,
+            "review_reasons": [],
             "classification_reasoning": result["reasoning"],
             "urgency": result["urgency"],
             "emotional_escalation": False,
         }
+        case["review_reasons"] = review_flags(case, record["raw_text"])
+        case["needs_human_review"] = bool(case["review_reasons"])
         cases.append(case)
 
     clusters = cluster_cases(cases)

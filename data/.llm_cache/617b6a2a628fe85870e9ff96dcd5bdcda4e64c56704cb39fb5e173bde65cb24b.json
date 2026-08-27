@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "water_supply",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД",
+      "ГКП на ПХВ «Көкшетау Су Арнасы»"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о текущей коммунальной аварии (порыв трубы во дворе), что квалифицируется как сообщение о дефекте работы службы, а не как жалоба на незаконное решение."
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "corpus_sha256": "424c29fee69ba2e1d2b7751fa96dd60193ea8534bbab8fe6b9886b9ee3d407b5",
+  "corpus_sha256": "d4d90fd6622d1173a7a8fc1d98f7636b8c2398adf77f9f42ed5834b684aadd75",
   "ground_truth": {
     "AP-0001": {
       "appeal_type": "сообщение",

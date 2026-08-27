@@ -36,6 +36,40 @@ def _print_confusion(field: str, pairs: list[tuple[str, str]]) -> None:
         print(f"{actual[:width]:>{width}}  {cells}")
 
 
+def review_calibration(
+    cases: list[dict[str, Any]], ground_truth: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    """Measure whether structural review flags separate harder appeal-type cases."""
+    flagged = [case for case in cases if case.get("needs_human_review")]
+    unflagged = [case for case in cases if not case.get("needs_human_review")]
+    if any(not case.get("review_reasons") for case in flagged):
+        raise ValueError("Every flagged case must carry at least one review reason")
+
+    def accuracy(partition: list[dict[str, Any]]) -> float | None:
+        if not partition:
+            return None
+        return sum(
+            case["appeal_type"] == ground_truth[case["id"]]["appeal_type"]
+            for case in partition
+        ) / len(partition)
+
+    flagged_accuracy = accuracy(flagged)
+    unflagged_accuracy = accuracy(unflagged)
+    gap = (
+        unflagged_accuracy - flagged_accuracy
+        if flagged_accuracy is not None and unflagged_accuracy is not None
+        else None
+    )
+    return {
+        "flagged_count": len(flagged),
+        "flagged_share": len(flagged) / len(cases) if cases else 0.0,
+        "flagged_accuracy": flagged_accuracy,
+        "unflagged_count": len(unflagged),
+        "unflagged_accuracy": unflagged_accuracy,
+        "accuracy_gap": gap,
+    }
+
+
 def main() -> None:
     if not RESULTS_PATH.exists():
         raise SystemExit("data/demo_results.json is missing; run scripts/freeze_demo.py first.")
@@ -85,6 +119,28 @@ def main() -> None:
         f"Measured gap: {accuracy_gap:+.2%}"
     )
 
+    calibration = review_calibration(cases, ground_truth)
+    print(
+        f"\nFlagged for review: {calibration['flagged_share']:.2%} "
+        f"({calibration['flagged_count']}/{len(cases)})\n"
+        f"Appeal-type accuracy, flagged: {calibration['flagged_accuracy']:.2%}\n"
+        f"Appeal-type accuracy, unflagged: {calibration['unflagged_accuracy']:.2%}\n"
+        f"Unflagged minus flagged: {calibration['accuracy_gap']:+.2%}"
+    )
+
+    failures: list[str] = []
+    if accuracies["appeal_type"] < 0.876:
+        failures.append("appeal_type accuracy is below 87.60%")
+    if accuracies["topic"] < 0.96:
+        failures.append("topic accuracy is below 96%")
+    if not 0.08 <= calibration["flagged_share"] <= 0.15:
+        failures.append("review share is outside 8–15%")
+    if calibration["accuracy_gap"] is None or calibration["accuracy_gap"] < 0.20:
+        failures.append("review accuracy gap is below 20 percentage points")
+    if failures:
+        SCORE_PATH.unlink(missing_ok=True)
+        raise SystemExit("FAIL: " + "; ".join(failures))
+
     if accuracies["appeal_type"] >= 1.0:
         SCORE_PATH.unlink(missing_ok=True)
         raise SystemExit("FAIL: appeal_type accuracy is 100%; investigate a ground-truth leak.")
@@ -100,6 +156,7 @@ def main() -> None:
             "accuracy": majority_baseline,
         },
         "appeal_type_accuracy_gap": accuracy_gap,
+        "review_calibration": calibration,
     }
     SCORE_PATH.write_text(
         json.dumps(score_payload, ensure_ascii=False, indent=2) + "\n",

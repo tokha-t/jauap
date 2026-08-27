@@ -51,6 +51,7 @@ class TriagedCase:
     draft_response: str | None
     confidence: float
     needs_human_review: bool
+    review_reasons: list[str] = field(default_factory=list)
     classification_reasoning: str = ""
     urgency: str = "routine"
     emotional_escalation: bool = False

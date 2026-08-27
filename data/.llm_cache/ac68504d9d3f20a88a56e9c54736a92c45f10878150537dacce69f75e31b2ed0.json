@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "street_lighting",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "kk",
+    "urgency": "routine",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о текущем дефекте работы уличного освещения (не горят фонари), что классифицируется как сообщение о нарушении или дефекте работы госоргана в соответствии с правилами."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+    "appeal_type": "сообщение",
+    "topic": "road_condition",
+    "routing_targets": [
+      "Отдел ЖКХ, ПТ и АД"
+    ],
+    "language_detected": "ru",
+    "urgency": "elevated",
+    "confidence": 0.95,
+    "reasoning": "Гражданин сообщает о факте дефекта дорожного покрытия (яма) и нарушения правил движения, что в соответствии с правилами квалифицируется как сообщение и относится к компетенции Отдела ЖКХ, ПТ и АД."
+  }
+}
