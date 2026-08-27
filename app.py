@@ -77,10 +77,10 @@ st.markdown(
 def _embed_leaflet_assets(fmap: folium.Map) -> None:
     """Replace Folium's CDN defaults with same-origin committed assets."""
     fmap.default_js = [
-        ("leaflet", "/app/static/leaflet.js"),
-        ("jquery", "/app/static/jquery.min.js"),
+        ("leaflet", "app/static/leaflet.js"),
+        ("jquery", "app/static/jquery.min.js"),
     ]
-    fmap.default_css = [("leaflet_css", "/app/static/leaflet.css")]
+    fmap.default_css = [("leaflet_css", "app/static/leaflet.css")]
 
 
 def _read_frozen_demo() -> dict[str, Any]:
@@ -322,7 +322,7 @@ def map_tab(cases: list[dict[str, Any]], clusters: list[dict[str, Any]]) -> None
     )
     _embed_leaflet_assets(fmap)
     folium.TileLayer(
-        tiles="/app/static/tiles/{z}/{x}/{y}.png",
+        tiles="app/static/tiles/{z}/{x}/{y}.png",
         attr='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         name="OpenStreetMap · офлайн", min_zoom=11, max_zoom=15,
         max_native_zoom=15, no_wrap=True, overlay=False, control=False,
