@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import hashlib
 import random
+import re
 from collections import Counter
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
@@ -135,7 +136,7 @@ TYPE_WRAPPERS = {
     "ru": {
         "сообщение": "{base}. Сообщаю этот факт для регистрации.",
         "заявление": "{base}. Для моего дома нужно устранить эту проблему; прошу включить работу в исполнение.",
-        "жалоба": "Ранее обращался по той же проблеме: {base}. Ответа нет, считаю это бездействием и требую восстановить нарушенное право.",
+        "жалоба": "Ранее обращался по той же проблеме: {base}. Ответа нет; обжалую бездействие и добиваюсь восстановления нарушенного права.",
         "запрос": "{base}. Нужна информация: какой срок и график работ утверждены?",
         "предложение": "{base}. Предлагаю включить этот объект в план улучшений, чтобы ситуация не повторялась.",
         "отклик": "{base}. Поддерживаю принятое городом решение устранить эту проблему.",
@@ -151,18 +152,18 @@ TYPE_WRAPPERS = {
     "mixed": {
         "сообщение": "{base}. Уже бірнеше күн болды, фактіні тіркеуді прошу.",
         "заявление": "{base}. Өз құқығымды іске асыру үшін прошу включить устранение в работу.",
-        "жалоба": "Раньше осы мәселе бойынша өтініш бердім: {base}. Ответа нет, әрекетсіздік деп санаймын и требую восстановить право.",
+        "жалоба": "Раньше осы мәселе бойынша өтініш бердім: {base}. Ответа нет; обжалую әрекетсіздік и добиваюсь восстановления права.",
         "запрос": "{base}. Когда бекітілген мерзім мен график дайын болады, прошу сообщить.",
         "предложение": "{base}. Қайталанбауы үшін предлагаю нысанды жоспарға енгізуді, прошу рассмотреть.",
         "отклик": "{base}. Қаланың осы шешімін поддерживаю, пікірімді прошу учесть.",
     },
     "latin": {
-        "сообщение": "{base}. Bul jagdaidy qashan tirkeuge alatyndarynyzdy habarlaimyn.",
-        "заявление": "{base}. Oz quqygymdy iske asyru ushin komek korsetuinizdi suraimyn, qashan oryndalady?",
-        "жалоба": "Buryngy otinishim jawapsyz qaldy: {base}. Areketsizdikke shagymdanamyn, qashan quqygym qalpyna keledi?",
+        "сообщение": "{base}. Bul jagdaidy tirkeuge jiberip oturmyn.",
+        "заявление": "{base}. Oz quqygymdy iske asyru ushin komek korsetuinizdi suraimyn.",
+        "жалоба": "Buryngy otinishim jawapsyz qaldy: {base}. Areketsizdikke shagymdanamyn, quqygymdy qalpyna keltirudi suraimyn.",
         "запрос": "{base}. Bekitilgen merzim men jumys kestesi qashan dayin bolady?",
-        "предложение": "{base}. Qaitalanbauy ushin nysandy jaqsartu josparyna engizudi usynamyn, qashan qaralady?",
-        "отклик": "{base}. Qala sheshimin qoldaimyn, pikirim qashan eskeriletinin habarlanyz.",
+        "предложение": "{base}. Qaitalanbauy ushin nysandy jaqsartu josparyna engizudi usynamyn.",
+        "отклик": "{base}. Qala sheshimin qoldaimyn, pikirimdi eskeruinizdi suraimyn.",
     },
 }
 
@@ -198,6 +199,97 @@ LANGUAGE_SUFFIXES = {
     "mixed": ["!!! уже невозможно", " жауап беріңіздер пожалуйста", " срочно көмектесіңіздер"],
     "latin": ["!!!", " jauap berinizder", " qashan sheshiledi"],
 }
+TEXT_VARIANTS = {
+    "ru": [
+        " Ситуация сохраняется на момент отправки.",
+        " Проблема актуальна сегодня.",
+        " Пишу от имени жильцов дома.",
+        " Описываю состояние объекта без изменений.",
+        " Это повторяется в нашем квартале.",
+        " На месте всё остаётся по-прежнему.",
+    ],
+    "kk": [
+        " Жағдай хабар жіберілген сәтте әлі өзгермеді.",
+        " Мәселе бүгін де өзекті болып тұр.",
+        " Үй тұрғындарының атынан жазып отырмын.",
+        " Нысанның қазіргі күйін хабарлап отырмын.",
+        " Бұл жағдай біздің аумақта қайталанып отыр.",
+        " Оқиға орнында өзгеріс болған жоқ.",
+    ],
+    "mixed": [
+        " Жағдай на момент отправки өзгерген жоқ.",
+        " Мәселе сегодня да актуально болып тұр.",
+        " Үй тұрғындары атынан пишу.",
+        " Нысанның текущее состояние өзгермеді.",
+        " Бұл жағдай в нашем квартале қайталанады.",
+        " На месте әзірге өзгеріс жоқ.",
+    ],
+    "latin": [
+        " Jagdai habar jiberilgen satte ali ozgergen joq.",
+        " Masele bugin de ozekti, azirge sheshim joq.",
+        " Ui turgyndary atynan jazyp oturmyn, ozgeris joq.",
+        " Nysannyn qazirgi kuiin habarlap oturmyn, ozgeris joq.",
+        " Bul jagdai bizdin aumaqta qaitalanyp tur, sheshim joq.",
+        " Oqiga ornynda ali ozgeris joq.",
+    ],
+}
+CLUSTER_VARIANTS = {
+    "ru": [
+        " Жильцы заметили это утром.",
+        " Вода продолжает течь к подъезду.",
+        " Во дворе уже образовалась лужа.",
+        " Аварийная бригада пока не приехала.",
+    ],
+    "mixed": [
+        " Таңертең жильцы қайта көрді.",
+        " Су әлі течёт к подъезду.",
+        " Аулада уже большая лужа.",
+        " Аварийная бригада әлі келген жоқ.",
+    ],
+}
+
+KAZAKH_GLYPHS = re.compile(r"[әғқңөұүһі]", re.IGNORECASE)
+KAZAKH_MORPHEMES = re.compile(
+    r"\b(балалар|ауылында|және|жатыр|жоқ|бері|алдында|жанында|көмектесіңіздер|сұраймын|"
+    r"хабарлаймын|ұсынамын|қолдаймын|шағымданамын|мәселе|жағдай|нысан|үй|аула)\b",
+    re.IGNORECASE,
+)
+RUSSIAN_FUNCTION_WORDS = re.compile(
+    r"\b(нет|уже|прошу|когда|дом|двор|опять|пожалуйста|требую|раньше|ответа|для|этот|этой|по|во|и|или|сегодня|пишу|текущее|нашем|месте|момент)\b",
+    re.IGNORECASE,
+)
+RUSSIAN_LEXEMES = re.compile(
+    r"\b(труба|вода|жильцы|сломан|ответ|мусор|фонари|автобус|крыша|батареи|проблема|ситуация)\b",
+    re.IGNORECASE,
+)
+LATIN_KAZAKH_MARKERS = re.compile(
+    r"\b(joq|qashan|uide|jatyr|tuspedi|janbaidy|jagdai|masele|turgyndary|nysan|ozgeris|qaitalanyp)\b",
+    re.IGNORECASE,
+)
+
+
+def language_label_violations(text: str, label: str) -> list[str]:
+    """Validate language labels in both directions without changing fallback logic."""
+    has_kazakh = bool(KAZAKH_GLYPHS.search(text) or KAZAKH_MORPHEMES.search(text))
+    has_russian_function = bool(RUSSIAN_FUNCTION_WORDS.search(text))
+    has_russian = bool(has_russian_function or RUSSIAN_LEXEMES.search(text))
+    has_latin_kazakh = bool(LATIN_KAZAKH_MARKERS.search(text))
+    violations: list[str] = []
+    if label == "ru" and has_kazakh:
+        violations.append("ru label contains Kazakh glyphs or morphemes")
+    elif label == "kk":
+        if not has_kazakh:
+            violations.append("kk label has no Kazakh glyph or morpheme")
+        if has_russian_function:
+            violations.append("kk label contains Russian function words")
+    elif label == "mixed":
+        if not has_kazakh:
+            violations.append("mixed label has no Kazakh signal")
+        if not has_russian:
+            violations.append("mixed label has no Russian function word")
+    elif label == "latin" and not has_latin_kazakh:
+        violations.append("latin label has no Latin-script Kazakh marker")
+    return violations
 
 
 def _working_dates(count: int = 25) -> list[date]:
@@ -261,8 +353,7 @@ def _hard_cases() -> list[dict]:
     records = []
     for index in range(20):
         text, language = pipe_phrasings[index % len(pipe_phrasings)]
-        if index:
-            text += LANGUAGE_SUFFIXES[language][index % len(LANGUAGE_SUFFIXES[language])]
+        text += CLUSTER_VARIANTS[language][index // len(pipe_phrasings)]
         record = _record(
             index + 1, text, language, "water_supply",
             hard_case="broken_pipe_cluster_20" if index else "code_switched_naive_misroute+broken_pipe_cluster_20",
@@ -391,6 +482,7 @@ def generate() -> list[dict]:
     assert len(records) + len(topic_pool) == 250
     assert len(topic_pool) == len(language_pool)
     assert len(topic_pool) == len(type_pool)
+    used_texts = {record["raw_text"] for record in records}
 
     template_sets = {"ru": RU, "kk": KK, "mixed": MIXED, "latin": LATIN}
     for bulk_index, (topic, language, appeal_type) in enumerate(
@@ -408,8 +500,15 @@ def generate() -> list[dict]:
         text = TYPE_TEMPLATES[language][topic][appeal_type].format(base=text)
         if hard_case is None and number % 11 == 0:
             text = text.upper()
-        elif hard_case is None and number % 7 == 0:
-            text += rng.choice(LANGUAGE_SUFFIXES[language])
+        variants = TEXT_VARIANTS[language]
+        start = number % len(variants)
+        candidates = [
+            text + variants[(start + offset) % len(variants)]
+            for offset in range(len(variants))
+        ]
+        text = next((candidate for candidate in candidates if candidate not in used_texts), "")
+        assert text, ("phrasing pool exhausted", number, language, topic, appeal_type)
+        used_texts.add(text)
         records.append(
             _record(
                 number,
@@ -428,6 +527,7 @@ def generate() -> list[dict]:
 def validate(records: list[dict]) -> None:
     assert len(records) == 250
     assert len({record["id"] for record in records}) == 250
+    assert len({record["raw_text"] for record in records}) == 250
     assert Counter(record["language_detected"] for record in records) == LANGUAGE_QUOTAS
     for record in records:
         detected = _language(record["raw_text"])
@@ -435,6 +535,15 @@ def validate(records: list[dict]) -> None:
             record["id"],
             record["language_detected"],
             detected,
+            record["raw_text"],
+        )
+        violations = language_label_violations(
+            record["raw_text"], record["language_detected"]
+        )
+        assert not violations, (
+            record["id"],
+            record["language_detected"],
+            violations,
             record["raw_text"],
         )
     appeal_types = Counter(record["_ground_truth"]["appeal_type"] for record in records)

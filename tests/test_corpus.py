@@ -15,6 +15,7 @@ from jauap.corpus import (
     TYPE_TEMPLATES,
     UNVERIFIED_TOPICS,
     generate,
+    language_label_violations,
     validate,
 )
 
@@ -79,6 +80,25 @@ class CorpusCredibilityTests(unittest.TestCase):
     def test_every_language_label_is_derived_from_its_text(self) -> None:
         for record in self.records:
             self.assertEqual(_language(record["raw_text"]), record["language_detected"], record["id"])
+            self.assertEqual(
+                language_label_violations(
+                    record["raw_text"], record["language_detected"]
+                ),
+                [],
+                record["id"],
+            )
+
+    def test_raw_text_is_byte_unique(self) -> None:
+        self.assertEqual(
+            len({record["raw_text"] for record in self.records}),
+            len(self.records),
+        )
+
+    def test_language_validation_is_symmetric(self) -> None:
+        self.assertTrue(language_label_violations("Су құбыры сломан", "ru"))
+        self.assertTrue(language_label_violations("Прошу, үйде су жоқ", "kk"))
+        self.assertTrue(language_label_violations("Үйде су жоқ", "mixed"))
+        self.assertTrue(language_label_violations("ordinary English text", "latin"))
 
     def test_committed_ground_truth_is_bound_to_public_corpus(self) -> None:
         payload = json.loads(GROUND_TRUTH_PATH.read_text(encoding="utf-8"))
