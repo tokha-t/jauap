@@ -4,7 +4,7 @@
   "results_sha256": "a683b5ae4604f52d15aa802fd9d326e86f098948e3707d5dd7779fda4594786c",
   "accuracy": {
     "appeal_type": 0.876,
-    "topic": 0.924,
+    "topic": 0.964,
     "settlement": 1.0
   },
   "appeal_type_distribution": {

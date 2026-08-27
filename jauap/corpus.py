@@ -51,6 +51,7 @@ TOPIC_QUOTAS = {
     "social": 7,
     "education": 6,
 }
+UNVERIFIED_TOPICS = {"housing_inspection", "electricity", "stray_animals"}
 
 LANGUAGE_QUOTAS = {"ru": 100, "kk": 63, "mixed": 75, "latin": 12}
 TYPE_QUOTAS = {
@@ -238,9 +239,10 @@ def _record(
         "synthetic": True,
         "hard_case": hard_case,
         "settlement": settlement,
+        "_source_topic": topic,
         "_ground_truth": {
             "appeal_type": appeal_type,
-            "topic": topic,
+            "topic": "НЕ ОПРЕДЕЛЕНО" if topic in UNVERIFIED_TOPICS else topic,
             "settlement": settlement,
             "routing_targets": routing_targets,
             "confidence": confidence,
@@ -375,7 +377,11 @@ def _language_pool(
 def generate() -> list[dict]:
     rng = random.Random(SEED)
     records = _hard_cases()
-    used_topics = Counter(record["_ground_truth"]["topic"] for record in records if record["_ground_truth"]["topic"] in TOPIC_QUOTAS)
+    used_topics = Counter(
+        record["_source_topic"]
+        for record in records
+        if record["_source_topic"] in TOPIC_QUOTAS
+    )
     used_languages = Counter(record["language_detected"] for record in records)
     used_types = Counter(record["_ground_truth"]["appeal_type"] for record in records)
 
@@ -443,7 +449,7 @@ def validate(records: list[dict]) -> None:
             if record["_ground_truth"]["appeal_type"] == appeal_type
         }
         assert len(represented_languages) == min(target, len(LANGUAGE_QUOTAS))
-    expected_topics = Counter(record["_ground_truth"]["topic"] for record in records)
+    expected_topics = Counter(record["_source_topic"] for record in records)
     for topic, count in TOPIC_QUOTAS.items():
         assert expected_topics[topic] == count, (topic, expected_topics[topic], count)
     hard_cases = Counter(record["hard_case"] for record in records if record["hard_case"])
@@ -482,6 +488,8 @@ def main() -> None:
         record["id"]: record.pop("_ground_truth")
         for record in records
     }
+    for record in records:
+        record.pop("_source_topic")
     corpus_text = json.dumps(records, ensure_ascii=False, indent=2) + "\n"
     DATA_PATH.write_text(corpus_text, encoding="utf-8")
     GROUND_TRUTH_PATH.write_text(

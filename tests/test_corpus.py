@@ -13,6 +13,7 @@ from jauap.corpus import (
     TOPIC_QUOTAS,
     TYPE_QUOTAS,
     TYPE_TEMPLATES,
+    UNVERIFIED_TOPICS,
     generate,
     validate,
 )
@@ -54,6 +55,26 @@ class CorpusCredibilityTests(unittest.TestCase):
 
     def test_full_validation_passes(self) -> None:
         validate(self.records)
+
+    def test_unverified_competence_topics_have_unknown_ground_truth(self) -> None:
+        for record in self.records:
+            if record["_source_topic"] in UNVERIFIED_TOPICS:
+                self.assertEqual(
+                    record["_ground_truth"]["topic"],
+                    "НЕ ОПРЕДЕЛЕНО",
+                    record["id"],
+                )
+
+    def test_construction_ground_truth_remains_construction(self) -> None:
+        construction = [
+            record for record in self.records
+            if record["_source_topic"] == "construction"
+        ]
+        self.assertTrue(construction)
+        self.assertTrue(all(
+            record["_ground_truth"]["topic"] == "construction"
+            for record in construction
+        ))
 
     def test_every_language_label_is_derived_from_its_text(self) -> None:
         for record in self.records:

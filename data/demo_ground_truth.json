@@ -432,7 +432,7 @@
     },
     "AP-0061": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -544,7 +544,7 @@
     },
     "AP-0077": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -586,7 +586,7 @@
     },
     "AP-0083": {
       "appeal_type": "жалоба",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -698,7 +698,7 @@
     },
     "AP-0099": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -733,7 +733,7 @@
     },
     "AP-0104": {
       "appeal_type": "заявление",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -754,14 +754,14 @@
     },
     "AP-0107": {
       "appeal_type": "заявление",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
     },
     "AP-0108": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -775,7 +775,7 @@
     },
     "AP-0110": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
@@ -1524,14 +1524,14 @@
     },
     "AP-0217": {
       "appeal_type": "заявление",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
     },
     "AP-0218": {
       "appeal_type": "сообщение",
-      "topic": "electricity",
+      "topic": "НЕ ОПРЕДЕЛЕНО",
       "settlement": "Кокшетау",
       "routing_targets": null,
       "confidence": 0.94
