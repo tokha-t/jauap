@@ -1,36 +1,36 @@
 # JAUAP
 
-JAUAP — работающая демонстрационная версия внутренней системы диспетчеризации обращений для акимата Кокшетау. Она принимает синтетические обращения на русском, казахском и смешанном языке, определяет тип и компетенцию, рассчитывает процессуальный срок, группирует сообщения об одном объекте, объясняет риск эскалации и готовит проект ответа.
+JAUAP is a working demonstration of an internal citizen-request dispatch console for the Akimat of Kokshetau. It accepts synthetic requests in Russian, Kazakh, and mixed language, determines request type and responsible authority, calculates statutory deadlines, groups messages about the same object, explains escalation risk, and prepares draft replies.
 
-**Онлайн-демо:** [jauap-demo.streamlit.app](https://jauap-demo.streamlit.app/)
+**Live demo:** [jauap-demo.streamlit.app](https://jauap-demo.streamlit.app/)
 
-> **Демонстрационные данные полностью синтетические. Не загружайте реальные персональные данные.**
+> **All demonstration data is synthetic. Do not upload real personal information.**
 
-## Запуск
+## Run locally
 
-Требуется Python 3.11 или новее.
+Python 3.11 or newer is required.
 
 ```bash
 pip install -r requirements.txt
 JAUAP_OFFLINE=1 streamlit run app.py
 ```
 
-Основной провайдер проекта — **Gemini**; он остаётся выбранным до отдельного решения владельца проекта о смене backend. Возобновляемый `scripts/freeze_demo.py` создаёт 250-строчный замороженный демо-набор через реальный путь `classify_text()`, сохраняет контрольную точку после каждого обращения и при повторном запуске использует уже записанный кеш. Офлайн-загрузчик принимает результаты только при совпадении провайдера, модели, контракта классификации и SHA-256 текущего корпуса.
+The project’s primary provider is **Gemini** and remains selected until the project owner explicitly chooses another backend. The resumable `scripts/freeze_demo.py` script creates a frozen 250-record demo set through the real `classify_text()` path, saves a checkpoint after every request, and reuses its cache on reruns. The offline loader accepts results only when the provider, model, classification contract, and SHA-256 hash of the current corpus all match.
 
-Для живой классификации собственного синтетического текста:
+To classify your own synthetic text with the live model:
 
 ```bash
 export JAUAP_PROVIDER="gemini"
 export GOOGLE_API_KEY="..."
-# export JAUAP_MODEL="gemini-3.5-flash-lite"  # необязательное переопределение
+# export JAUAP_MODEL="gemini-3.5-flash-lite"  # optional override
 streamlit run app.py
 ```
 
-Ввод API-ключа через интерфейс отложен и помечен **Coming soon**. Пока живой ввод читает Gemini-ключ только из `GOOGLE_API_KEY` в окружении. Без ключа он не падает: переходит на правила, ставит уверенность `0.3` и требует ручную проверку.
+API-key entry in the interface is deferred and marked **Coming soon**. For now, live input reads the Gemini key only from the `GOOGLE_API_KEY` environment variable. Without a key, the app does not fail: it falls back to rules, assigns confidence `0.3`, and requires manual review.
 
-Все обращения при ошибке Gemini остаются в очереди: применяется резервная классификация с уверенностью `0.3` и обязательной ручной проверкой. Ответы кешируются в `data/.llm_cache/`; ключ кеша — SHA-256 от провайдера, модели, системного промпта и пользовательского текста. Внутренняя граница `jauap/llm.py` сохранена, чтобы backend можно было заменить позже отдельным осознанным решением, не меняя классификатор или интерфейс.
+If Gemini fails, every request remains in the queue. The app applies fallback classification with confidence `0.3` and requires manual review. Responses are cached in `data/.llm_cache/`; the cache key is a SHA-256 hash of the provider, model, system prompt, and user text. The internal boundary in `jauap/llm.py` is preserved so the backend can be replaced later through an explicit decision without changing the classifier or interface.
 
-Для одноразовой заморозки полного синтетического корпуса:
+To freeze the full synthetic corpus once:
 
 ```bash
 export JAUAP_PROVIDER="gemini"
@@ -39,80 +39,80 @@ python scripts/freeze_demo.py --delay 4
 python scripts/score_demo.py
 ```
 
-`.env` игнорируется Git; `.env.example` содержит только пустые значения. Ключи читаются исключительно из окружения.
+`.env` is ignored by Git; `.env.example` contains empty values only. Keys are read exclusively from the environment.
 
-## Обработка данных
+## Data handling and evaluation
 
-Все демонстрационные обращения полностью синтетические. Система не обрабатывала ни одного реального обращения гражданина. Фактические `provider`, `model`, `generated_at` и SHA-256 корпуса записываются в `data/demo_results.json` и проверяются перед загрузкой. Текущая заморозка Gemini `gemini-3.5-flash-lite` показывает **88,4%** точности типа обращения против **60,0%** у константного ответа «сообщение»: измеренный вклад модели составляет **+28,4 процентного пункта**. Точность темы — **96,4%**, населённого пункта — **100,0%**. Система сама отмечает **13,6%** обращений для проверки: точность типа на них — **52,9%**, на остальных — **94,0%** (разрыв **41,0 п.п.**). `scripts/score_demo.py` воспроизводит эти показатели на изолированной разметке; интерфейс показывает их только при совпадении хеша результатов.
+All demonstration requests are fully synthetic. The system has not processed any real citizen request. The actual `provider`, `model`, `generated_at`, and corpus SHA-256 hash are recorded in `data/demo_results.json` and validated before loading. The current Gemini `gemini-3.5-flash-lite` freeze reports **88.4%** request-type accuracy versus **60.0%** for the constant “message” baseline: a measured model contribution of **+28.4 percentage points**. Topic accuracy is **96.4%** and settlement accuracy is **100.0%**. The system flags **13.6%** of requests for review: request-type accuracy is **52.9%** on flagged cases and **94.0%** on the rest, a **41.0-point** gap. `scripts/score_demo.py` reproduces these figures against isolated ground truth; the interface displays them only when the result hash matches.
 
-Для неоплачиваемого Gemini действуют [дополнительные условия Google](https://ai.google.dev/gemini-api/terms). Google указывает, что содержимое запросов и ответов может использоваться для предоставления, улучшения и развития продуктов и технологий Google, а входные и выходные данные API могут читать, размечать и обрабатывать люди-рецензенты. Прямое предписание условий: **“Do not submit sensitive, confidential, or personal information to the Unpaid Services.”**
+The [Google Gemini additional terms](https://ai.google.dev/gemini-api/terms) apply to unpaid Gemini usage. Google states that request and response content may be used to provide, improve, and develop Google products and technologies, and that human reviewers may read, annotate, and process API inputs and outputs. The terms expressly state: **“Do not submit sensitive, confidential, or personal information to the Unpaid Services.”**
 
-Поэтому бесплатные провайдеры допустимы только для синтетических демонстрационных данных. До того как в систему попадёт первое реальное обращение — до пилота на неделях 5–8 — backend должен перейти на платный тариф с условиями обработки данных либо на локальный inference внутри периметра акимата. По законодательству Казахстана о персональных данных акимат является контролёром реальных обращений; условия бесплатного тарифа несовместимы с этой ролью.
+Free providers are therefore suitable only for synthetic demonstrations. Before the first real request enters the system—before a weeks 5–8 pilot—the backend must move to a paid plan with appropriate data-processing terms or to local inference inside the Akimat’s perimeter. Under Kazakhstan’s personal-data law, the Akimat is the controller of real requests; unpaid-plan terms are incompatible with that role.
 
-## Что демонстрировать
+## Demo walkthrough
 
-После создания и скоринга честных замороженных результатов:
+After creating and scoring honest frozen results:
 
-1. На вкладке **«Очередь»** загрузить 250 обращений и открыть смешанное казахско-русское обращение.
-2. На вкладке **«Карта»** переключить отдельные отметки на кластерные. Двадцать формулировок о порыве трубы во дворе дома 14 по улице Абая образуют ровно один кластер `CL-001`; фактическое количество отметок берётся из текущих замороженных результатов.
-3. На вкладке **«Сроки»** выбрать жалобу `AP-0025`: срок составляет 20 рабочих дней, а продление заблокировано по АППК ст. 99.
-4. На вкладке **«Сводка»** показать верхнюю оценку предотвращённой задержки маршрутизации и долю смешанных обращений.
+1. On **Queue**, load 250 requests and open a mixed Kazakh–Russian request.
+2. On **Map**, switch from individual markers to clusters. Twenty descriptions of a burst pipe in the courtyard of building 14 on Abay Street form exactly one `CL-001` cluster; the actual marker count comes from the current frozen results.
+3. On **Deadlines**, select complaint `AP-0025`: the deadline is 20 working days and extension is blocked under APPC Article 99.
+4. On **Summary**, show the upper-bound estimate of prevented routing delay and the share of mixed-language requests.
 
-Карта является только внутренним операторским представлением. В ней нет публикации, общего доступа, публичного экспорта или встраивания.
+The map is an internal operator view only. It provides no publication, sharing, public export, or embedding workflow.
 
-## Правила сроков
+## Deadline rules
 
-Расчёт реализован в `jauap/deadline_engine.py` по таблице из спецификации:
+The rules are implemented in `jauap/deadline_engine.py` from the specification table:
 
-- заявление — 15 рабочих дней, АППК ст. 76(1);
-- жалоба — 20 рабочих дней, АППК ст. 99, без продления;
-- сообщение, предложение, отклик и запрос — 15 рабочих дней, АППК ст. 87 + 76(1);
-- запрос по Закону № 401-V — 15 календарных дней;
-- местная петиция — 20 рабочих дней.
+- application — 15 working days, APPC Article 76(1);
+- complaint — 20 working days, APPC Article 99, no extension;
+- message, proposal, response, and inquiry — 15 working days, APPC Articles 87 + 76(1);
+- inquiry under Law No. 401-V — 15 calendar days;
+- local petition — 20 working days.
 
-Счёт начинается на следующий день после регистрации. Поступление после 18:00, в выходной или праздник регистрируется в следующий рабочий день. Если последний день нерабочий, срок переносится вперёд. Праздники находятся в редактируемом `data/holidays.json`.
+Counting starts on the day after registration. Arrivals after 18:00, on weekends, or on holidays are registered on the next working day. If the final day is non-working, the deadline moves forward. Holidays are editable in `data/holidays.json`.
 
-`TODO_VERIFY_KURBAN_AIT_ENTER_MANUALLY` в этом файле намерен: дата Курбан-айта ежегодно проверяется человеком и не вычисляется программно.
+`TODO_VERIFY_KURBAN_AIT_ENTER_MANUALLY` is intentional: the Kurban Ait date must be checked by a person each year and is not calculated programmatically.
 
-Просрочка переводит дело в состояние **«Считается отказом — АППК ст. 91(2)»**. Интерфейс не заявляет об административном штрафе: КоАП ст. 189 исключена с 1 июля 2021 года. Подсказка риска объясняет дисциплинарный трек по Закону «О государственной службе».
+An overdue case enters **“Deemed refusal — APPC Article 91(2)”**. The interface does not claim an administrative fine: Administrative Code Article 189 was removed on 1 July 2021. The risk tooltip explains the disciplinary track under the Law on Civil Service.
 
-## Маршрутизация
+## Routing
 
-`data/routing.json` различает операционного исполнителя и держателя процессуального срока. Например, водоснабжение уходит одновременно в ГКП «Көкшетау Су Арнасы» и в Отдел ЖКХ, ПТ и АД; частному ТОО «Кокше Тазалык» не приписывается срок АППК.
+`data/routing.json` distinguishes the operational assignee from the statutory deadline holder. For example, water-supply requests are routed both to the municipal enterprise “Kokshetau Su Arnasy” and to the Department of Housing and Utilities, Passenger Transport, and Highways; the private company “Kokshe Tazalyk” is not assigned an APPC deadline.
 
-Показатель сэкономленных рабочих дней — **верхняя оценка**, а не фактически измеренная экономия: `3 рабочих дня × количество дел с определённой компетенцией`. Три дня — предельный срок перенаправления по АППК ст. 65(1). Для дел с неопределённой компетенцией экономия равна нулю.
+The saved-working-days metric is an **upper-bound estimate**, not measured savings: `3 working days × number of cases with determined competence`. Three days is the maximum forwarding period under APPC Article 65(1). Savings are zero for cases with undetermined competence.
 
-Жилищная инспекция / КСК–ОСИ, отключения электричества и бездомные животные намеренно направляются в `НЕ ОПРЕДЕЛЕНО — требует уточнения`, пока компетенцию не подтвердит акимат.
+Housing inspection / condominium management, power outages, and stray animals are intentionally routed to `UNDETERMINED — clarification required` until the Akimat confirms competence.
 
-## География и точность данных
+## Geography and data accuracy
 
-Адреса нормализуются и сопоставляются только с локальным `data/streets.json`; сетевого геокодера нет. Координаты — приблизительные демонстрационные точки в пределах Кокшетау, Красного Яра и Станционного. Для пилота их необходимо заменить адресным регистром акимата или лицензированными данными 2GIS.
+Addresses are normalized and matched only against the local `data/streets.json`; there is no network geocoder. Coordinates are approximate demonstration points within Kokshetau, Krasny Yar, and Stantsionny. For a pilot, replace them with the Akimat’s address register or licensed 2GIS data.
 
-Список улиц собран из публичных OpenStreetMap / 2GIS / Yandex-производных источников **и не является официальным реестром улиц**. Его нельзя представлять сотрудникам акимата как авторитетный источник.
+The street list was assembled from public OpenStreetMap-, 2GIS-, and Yandex-derived sources **and is not an official street registry**. It must not be presented to Akimat staff as an authoritative source.
 
-Офлайн-карта использует 1 253 локально отрисованных XYZ-тайла из данных OpenStreetMap для Кокшетау на масштабах 11–15. Улицы и железная дорога остаются видимыми без сети; атрибуция OpenStreetMap показана на карте. Схематические слои озера Копа и рек Шағалалы и Кылшакты сохранены поверх подложки.
+The offline map uses 1,253 locally rendered XYZ tiles from OpenStreetMap data for Kokshetau at zoom levels 11–15. Streets and the railway remain visible without network access; OpenStreetMap attribution is shown on the map. Schematic layers for Lake Kopa and the Shagalaly and Kylshakty rivers are preserved over the basemap.
 
-## Обязательная языковая проверка
+## Required language review
 
-**Каждое казахоязычное, смешанное и записанное латиницей обращение должно быть прочитано и исправлено Тохой до любой демонстрации.** В корпусе 150 таких записей. Этот репозиторий не утверждает, что сгенерированный казахский текст прошёл проверку носителем языка. Казахские проекты ответов также требуют языковой и юридической вычитки.
+**Every Kazakh-language, mixed-language, and Latin-script request must be read and corrected by Tokha before any demonstration.** The corpus contains 150 such records. This repository does not claim that generated Kazakh text has been reviewed by a native speaker. Kazakh draft replies also require language and legal proofreading.
 
-## Структура
+## Structure
 
 ```text
-app.py                    Streamlit, четыре вкладки
-jauap/schema.py           доменные dataclass-модели
-jauap/corpus.py           одноразовая генерация синтетического корпуса
-jauap/classify.py         классификация и маршрутизация
-jauap/deadline_engine.py  календарь и сроки АППК
-jauap/geo.py              локальное извлечение и разрешение адресов
-jauap/cluster.py          single-linkage кластеризация
-jauap/risk.py             прозрачный взвешенный риск
-jauap/draft.py            проекты ответов и уведомления
-jauap/llm.py              Gemini-primary граница модели и кеш
-data/demo_corpus.json     250 исходных синтетических обращений
-data/demo_ground_truth.json  изолированная эталонная разметка только для скоринга
-data/demo_results.json    создаётся `scripts/freeze_demo.py` из реальных модельных ответов
-data/tiles/               локальные офлайн-тайлы Кокшетау
+app.py                         Streamlit app with four tabs
+jauap/schema.py                domain dataclass models
+jauap/corpus.py                one-time synthetic corpus generation
+jauap/classify.py              classification and routing
+jauap/deadline_engine.py       APPC calendar and deadlines
+jauap/geo.py                   local address extraction and resolution
+jauap/cluster.py               single-linkage clustering
+jauap/risk.py                  transparent weighted risk
+jauap/draft.py                 draft replies and notifications
+jauap/llm.py                   Gemini-primary model boundary and cache
+data/demo_corpus.json          250 source synthetic requests
+data/demo_ground_truth.json    isolated reference labels for scoring only
+data/demo_results.json         generated by scripts/freeze_demo.py from model responses
+data/tiles/                    local offline Kokshetau tiles
 ```
 
-Это демонстрация, а не производственная система: здесь намеренно нет аутентификации, базы данных, eOtinish/API государственных органов, мобильного или публичного интерфейса, Docker, CI, облачного развёртывания, распознавания речи, обучения моделей и базы эмбеддингов.
+This is a demonstration, not a production system. Authentication, a database, eOtinish or government APIs, mobile or public-facing workflows, Docker, CI, cloud deployment, speech recognition, model training, and an embedding database are intentionally out of scope.
